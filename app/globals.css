@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── SF Pro font-face ── */
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 100;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Thin.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 300;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Light.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 500;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Semibold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SF-Pro';
+  font-style: normal;
+  font-weight: 900;
+  src: local('SF-Pro'), url('/fonts/SF-Pro-Display-Heavy.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Rubik';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Rubik'), url('/fonts/Rubik-BoldItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Rubik'), url('/fonts/Rubik-Medium.ttf') format('truetype');
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Global reset (on top of Tailwind preflight) ── */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'SF-Pro', sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: #ffffff;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+span {
+  font-weight: bold;
 }
