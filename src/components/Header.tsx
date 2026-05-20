@@ -7,7 +7,7 @@ import { useIsMobile } from '@/src/hooks/useIsMobile';
 import { theme } from '@/src/const';
 import GreekMeander from '@/src/components/GreekMeander';
 
-const NAV_ITEMS = ['Home', 'Career', 'Portfolio', 'Skills'] as const;
+const NAV_ITEMS = ['Home', 'Processing', 'Portfolio', 'Career', 'Contact'] as const;
 
 const Header = () => {
   useTranslation();

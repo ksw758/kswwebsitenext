@@ -7,7 +7,8 @@ import { theme } from '@/src/const';
 import GreekMeander from '@/src/components/GreekMeander';
 
 const careerData: Record<string, Record<string, string[]>> = {
-  '2025': { '5': ['career.events.2025_5_0'], '3': ['career.events.2025_3_0'] },
+  '2026': { '5': ['career.events.2026_5_0'] },
+  '2025': { '9': ['career.events.2025_9_0'], '5': ['career.events.2025_5_0'], '3': ['career.events.2025_3_0'] },
   '2024': { '9': ['career.events.2024_9_0'] },
   '2023': {
     '12': ['career.events.2023_12_0'],
@@ -42,6 +43,18 @@ const Career = () => {
   const isMobile = useIsMobile();
 
   const entries = Object.entries(careerData).reverse();
+
+  const parallaxCard: React.CSSProperties = {
+    backgroundImage: 'linear-gradient(rgba(10, 6, 1, 0.62), rgba(10, 6, 1, 0.62)), url("/images/aboutimage3.jpg")',
+    backgroundAttachment: 'fixed',
+    backgroundPosition: '50% 0',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    borderRadius: 4,
+    padding: isMobile ? '20px 20px 20px 36px' : '24px 28px 24px 64px',
+    marginBottom: 16,
+    position: 'relative',
+  };
 
   return (
     <section
@@ -82,7 +95,7 @@ const Career = () => {
           fontFamily: theme.font.serif,
           fontSize: isMobile ? 20 : 30,
           fontWeight: 700,
-          color: theme.color.sepia,
+          color: theme.color.parchment,
           textAlign: 'center',
           lineHeight: 1.6,
           letterSpacing: '0.3px',
@@ -92,46 +105,20 @@ const Career = () => {
       </h2>
 
       {/* Timeline */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 720,
-          position: 'relative',
-        }}
-      >
-        {/* Vertical gold line */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 8,
-            bottom: 8,
-            left: isMobile ? 10 : 24,
-            width: 1,
-            background: theme.color.gold,
-            opacity: 0.35,
-          }}
-        />
-
-        {entries.map(([year, months], i) => (
-          <div
-            key={year}
-            style={{
-              position: 'relative',
-              paddingLeft: isMobile ? 36 : 64,
-              marginBottom: i < entries.length - 1 ? 36 : 0,
-            }}
-          >
+      <div style={{ width: '100%', maxWidth: 720 }}>
+        {entries.map(([year, months]) => (
+          <div key={year} style={parallaxCard}>
             {/* Gold dot */}
             <div
               style={{
                 position: 'absolute',
-                top: 6,
-                left: isMobile ? 4 : 18,
-                width: 13,
-                height: 13,
+                top: 26,
+                left: isMobile ? 12 : 26,
+                width: 11,
+                height: 11,
                 borderRadius: '50%',
                 border: `1.5px solid ${theme.color.gold}`,
-                background: theme.color.parchment,
+                background: 'rgba(10, 6, 1, 0.8)',
               }}
             />
 
@@ -143,7 +130,7 @@ const Career = () => {
                 fontWeight: 700,
                 color: theme.color.gold,
                 letterSpacing: '2px',
-                marginBottom: 10,
+                marginBottom: 12,
               }}
             >
               {year}{t('career.year')}
@@ -181,7 +168,7 @@ const Career = () => {
                         style={{
                           fontFamily: theme.font.serif,
                           fontSize: isMobile ? 12 : 14,
-                          color: theme.color.sepia,
+                          color: theme.color.parchment,
                           lineHeight: 1.7,
                         }}
                       >
@@ -191,25 +178,12 @@ const Career = () => {
                   </div>
                 </div>
               ))}
-
-            {/* Row divider */}
-            {i < entries.length - 1 && (
-              <div
-                style={{
-                  marginTop: 20,
-                  width: '100%',
-                  height: 1,
-                  background: theme.color.gold,
-                  opacity: 0.15,
-                }}
-              />
-            )}
           </div>
         ))}
       </div>
 
       {/* Bottom meander */}
-      <div style={{ width: 140, marginTop: 56 }}>
+      <div style={{ width: 140, marginTop: 40 }}>
         <GreekMeander id="gk-career-bottom" strokeColor={theme.color.gold} />
       </div>
     </section>

@@ -10,6 +10,8 @@ export const english = {
         year: "Y",
         month: "M",
         events: {
+            "2026_5_0": "Launched K-Docfinder, a global medical reservation platform",
+            "2025_9_0": "Launched Market Shakaraka, ING Fashion Android/iOS",
             "2025_5_0": "Resigned from Dagyeom",
             "2025_3_0": "Launched Dagyeom portfolio website",
             "2024_9_0": "Launched SocoDress clothing shopping mall app service",

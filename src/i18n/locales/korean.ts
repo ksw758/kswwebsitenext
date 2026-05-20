@@ -10,6 +10,8 @@ export const korean = {
         year: "년",
         month: "월",
         events: {
+            "2026_5_0": "글로벌 메디컬 예약 플랫폼 K-Docfinder 런칭",
+            "2025_9_0": "Market Shakaraka, ING Fashion Android/iOS 런칭",
             "2025_5_0": "다겸 퇴사",
             "2025_3_0": "다겸 포트폴리오 홈페이지 런칭",
             "2024_9_0": "의류 쇼핑몰 앱 소코드레스 서비스 런칭",
