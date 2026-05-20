@@ -4,13 +4,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLanguageStore } from '@store/languageStore';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
+import { theme } from '@/src/const';
+import GreekMeander from '@/src/components/GreekMeander';
 
 const NAV_ITEMS = ['Home', 'Career', 'Portfolio', 'Skills'] as const;
 
 const Header = () => {
   useTranslation();
-  const { language, toggleLanguage } = useLanguageStore();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -25,6 +27,9 @@ const Header = () => {
     window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
   }, []);
 
+  const textColor = isScrolled ? theme.color.sepia : theme.color.parchment;
+  const goldColor = isScrolled ? theme.color.gold : theme.color.goldFaded;
+
   return (
     <header
       style={{
@@ -37,62 +42,109 @@ const Header = () => {
         margin: '0 auto',
         width: '100%',
         height: 80,
-        opacity: 0.7,
-        transition: 'background 0.3s',
-        background: isScrolled ? '#FFFFFF' : '#161617',
+        background: isScrolled ? theme.color.parchment : theme.color.heroBg,
+        transition: 'background 0.4s ease',
+        fontFamily: theme.font.serif,
+        boxSizing: 'border-box',
       }}
     >
-      {/* Logo */}
-      <div style={{ position: 'absolute', top: 10, left: 40, width: 50 }}>
+      {/* Logo + wordmark */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: 32,
+          transform: 'translateY(-50%)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}
+      >
         <img
           src="https://yt3.googleusercontent.com/ytc/AGIKgqMxDVi0Qw4sNfz9te4eDBBRXnugZzzlefHIZoE2-A=s176-c-k-c0x00ffffff-no-rj"
           alt="logo"
-          style={{ width: '100%' }}
+          style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }}
         />
-      </div>
-
-      {/* Nav — desktop only */}
-      {!isMobile && (
-        <nav style={{ position: 'absolute', top: 28, right: 70, display: 'flex', alignItems: 'center' }}>
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item}
-              onClick={() => moveScroll(item)}
+        {!isMobile && (
+          <>
+            <div style={{ width: 1, height: 28, background: goldColor, opacity: 0.7 }} />
+            <span
               style={{
-                padding: '0 30px',
-                fontWeight: 700,
-                fontSize: 28,
-                lineHeight: '20px',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                color: isScrolled ? '#161617' : '#FFFFFF',
-                userSelect: 'none',
+                fontSize: 10,
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+                color: goldColor,
+                fontFamily: theme.font.serif,
+                fontWeight: 400,
               }}
             >
-              {item}
-            </a>
+              KSW
+            </span>
+          </>
+        )}
+      </div>
+
+      {/* Nav — desktop */}
+      {!isMobile && (
+        <nav
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {NAV_ITEMS.map((item, index) => (
+            <React.Fragment key={item}>
+              {index > 0 && (
+                <span style={{ color: goldColor, fontSize: 8, opacity: 0.8, margin: '0 4px' }}>
+                  ◆
+                </span>
+              )}
+              <a
+                onClick={() => moveScroll(item)}
+                onMouseEnter={() => setHoveredItem(item)}
+                onMouseLeave={() => setHoveredItem(null)}
+                style={{
+                  position: 'relative',
+                  padding: '0 18px',
+                  fontSize: 11,
+                  fontWeight: 400,
+                  letterSpacing: '3.5px',
+                  textTransform: 'uppercase',
+                  fontFamily: theme.font.serif,
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: hoveredItem === item ? goldColor : textColor,
+                  userSelect: 'none',
+                  transition: 'color 0.25s ease',
+                  lineHeight: '20px',
+                }}
+              >
+                {item}
+                <span
+                  style={{
+                    position: 'absolute',
+                    bottom: -3,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: hoveredItem === item ? 'calc(100% - 36px)' : '0%',
+                    height: 1,
+                    background: goldColor,
+                    transition: 'width 0.2s ease',
+                    display: 'block',
+                  }}
+                />
+              </a>
+            </React.Fragment>
           ))}
         </nav>
       )}
-
-      {/* Language toggle */}
-      <div style={{ position: 'absolute', top: 20, right: 20 }}>
-        <button
-          onClick={toggleLanguage}
-          style={{
-            background: 'transparent',
-            height: 30,
-            padding: '0 16px',
-            borderRadius: 4,
-            fontSize: 14,
-            cursor: 'pointer',
-            transition: 'all 0.3s',
-            border: `1px solid ${isScrolled ? '#161617' : '#FFFFFF'}`,
-            color: isScrolled ? '#161617' : '#FFFFFF',
-          }}
-        >
-          {language === 'ko' ? 'EN' : 'KO'}
-        </button>
+      {/* Greek meander border at bottom */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+        <GreekMeander id="gk-header" strokeColor={goldColor} />
       </div>
     </header>
   );

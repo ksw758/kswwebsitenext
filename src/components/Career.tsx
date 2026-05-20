@@ -3,6 +3,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
+import { theme } from '@/src/const';
+import GreekMeander from '@/src/components/GreekMeander';
 
 const careerData: Record<string, Record<string, string[]>> = {
   '2025': { '5': ['career.events.2025_5_0'], '3': ['career.events.2025_3_0'] },
@@ -39,81 +41,176 @@ const Career = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
 
+  const entries = Object.entries(careerData).reverse();
+
   return (
     <section
       id="Career"
       style={{
-        background: '#86868B',
+        background: theme.color.parchment,
         boxSizing: 'border-box',
         width: '100vw',
-        padding: isMobile ? '30px 20px' : '60px 40px',
+        padding: isMobile ? '60px 20px 72px' : '80px 40px 96px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      {/* ── Section title ── */}
-      <div
+      {/* Eyebrow label */}
+      <p
         style={{
-          display: 'inline-block',
+          margin: '0 0 14px 0',
+          fontFamily: theme.font.serif,
+          fontSize: 11,
+          letterSpacing: '4px',
+          textTransform: 'uppercase',
+          color: theme.color.gold,
+        }}
+      >
+        경력 타임라인
+      </p>
+
+      {/* Meander accent */}
+      <div style={{ width: 140, marginBottom: 22 }}>
+        <GreekMeander id="gk-career-top" strokeColor={theme.color.gold} />
+      </div>
+
+      {/* Title */}
+      <h2
+        style={{
+          margin: '0 0 60px 0',
+          fontFamily: theme.font.serif,
+          fontSize: isMobile ? 20 : 30,
           fontWeight: 700,
-          fontSize: isMobile ? 24 : 48,
-          color: '#FFFFFF',
-          borderBottom: isMobile ? '2px solid white' : '5px solid white',
-          paddingBottom: 6,
-          marginBottom: isMobile ? 10 : 20,
+          color: theme.color.sepia,
+          textAlign: 'center',
+          lineHeight: 1.6,
+          letterSpacing: '0.3px',
         }}
       >
         Career
-      </div>
+      </h2>
 
-      {/* ── Cards wrapper ── */}
-      <div style={{ width: isMobile ? '100%' : 960, margin: '0 auto' }}>
-        {Object.entries(careerData)
-          .reverse()
-          .map(([year, months], i) => (
+      {/* Timeline */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 720,
+          position: 'relative',
+        }}
+      >
+        {/* Vertical gold line */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 8,
+            bottom: 8,
+            left: isMobile ? 10 : 24,
+            width: 1,
+            background: theme.color.gold,
+            opacity: 0.35,
+          }}
+        />
+
+        {entries.map(([year, months], i) => (
+          <div
+            key={year}
+            style={{
+              position: 'relative',
+              paddingLeft: isMobile ? 36 : 64,
+              marginBottom: i < entries.length - 1 ? 36 : 0,
+            }}
+          >
+            {/* Gold dot */}
             <div
-              key={i}
               style={{
-                boxSizing: 'border-box',
-                width: '100%',
-                padding: 20,
-                borderRadius: 20,
-                backgroundImage: 'url("/images/aboutimage2.jpg")',
-                backgroundPosition: '50% 0px',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed',
-                backgroundSize: 'cover',
-                color: 'white',
-                marginBottom: 20,
+                position: 'absolute',
+                top: 6,
+                left: isMobile ? 4 : 18,
+                width: 13,
+                height: 13,
+                borderRadius: '50%',
+                border: `1.5px solid ${theme.color.gold}`,
+                background: theme.color.parchment,
+              }}
+            />
+
+            {/* Year label */}
+            <div
+              style={{
+                fontFamily: theme.font.serif,
+                fontSize: isMobile ? 13 : 15,
+                fontWeight: 700,
+                color: theme.color.gold,
+                letterSpacing: '2px',
+                marginBottom: 10,
               }}
             >
-              {/* Year heading */}
-              <div style={{ fontSize: isMobile ? 16 : 24, marginBottom: 5 }}>
-                {year}{t('career.year')}
-              </div>
+              {year}{t('career.year')}
+            </div>
 
-              {/* Month rows */}
-              {Object.entries(months)
-                .reverse()
-                .map(([month, keys], j) => (
-                  <div
-                    key={j}
+            {/* Month rows */}
+            {Object.entries(months)
+              .reverse()
+              .map(([month, keys], j) => (
+                <div
+                  key={j}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    marginBottom: 6,
+                    gap: 16,
+                  }}
+                >
+                  <span
                     style={{
-                      display: 'flex',
-                      fontSize: isMobile ? 12 : 18,
-                      marginBottom: 5,
+                      fontFamily: theme.font.serif,
+                      fontSize: isMobile ? 11 : 12,
+                      color: theme.color.gold,
+                      letterSpacing: '1px',
+                      flexShrink: 0,
+                      width: isMobile ? 28 : 32,
                     }}
                   >
-                    <div style={{ width: 40, marginRight: 20, flexShrink: 0 }}>
-                      {month}{t('career.month')}
-                    </div>
-                    <div>
-                      {keys.map((key, k) => (
-                        <div key={k}>{t(key)}</div>
-                      ))}
-                    </div>
+                    {month}{t('career.month')}
+                  </span>
+                  <div>
+                    {keys.map((key, k) => (
+                      <div
+                        key={k}
+                        style={{
+                          fontFamily: theme.font.serif,
+                          fontSize: isMobile ? 12 : 14,
+                          color: theme.color.sepia,
+                          lineHeight: 1.7,
+                        }}
+                      >
+                        {t(key)}
+                      </div>
+                    ))}
                   </div>
-                ))}
-            </div>
-          ))}
+                </div>
+              ))}
+
+            {/* Row divider */}
+            {i < entries.length - 1 && (
+              <div
+                style={{
+                  marginTop: 20,
+                  width: '100%',
+                  height: 1,
+                  background: theme.color.gold,
+                  opacity: 0.15,
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom meander */}
+      <div style={{ width: 140, marginTop: 56 }}>
+        <GreekMeander id="gk-career-bottom" strokeColor={theme.color.gold} />
       </div>
     </section>
   );

@@ -1,19 +1,21 @@
 import Header from '@/src/components/Header';
 import Main from '@/src/components/Main';
-import Career from '@/src/components/Career';
+import Processing from '@/src/components/Processing';
 import Portfolio from '@/src/components/Portfolio';
-import Skills from '@/src/components/Skills';
+import Career from '@/src/components/Career';
 import Footer from '@/src/components/Footer';
+import Contact from "@components/Contact";
 
 export default function Home() {
-  return (
-    <>
-      <Header />
-      <Main />
-      <Career />
-      <Portfolio />
-      <Skills />
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Header/>
+            <Main/>
+            <Processing/>
+            <Portfolio/>
+            <Career />
+            <Contact />
+            <Footer/>
+        </>
+    );
 }

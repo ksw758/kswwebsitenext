@@ -1,5 +1,18 @@
 // Career and Portfolio data now handled directly in their respective components with i18n
 
+export const theme = {
+  color: {
+    gold: '#C8A84B',
+    goldFaded: 'rgba(200, 168, 75, 0.75)',
+    parchment: '#F7F0DC',
+    sepia: '#1C0F00',
+    heroBg: 'rgba(10, 6, 1, 0.72)',
+  },
+  font: {
+    serif: "Georgia, 'Palatino Linotype', serif",
+  },
+} as const;
+
 export const MySkills: {
   editor: {
     [key: string]: {

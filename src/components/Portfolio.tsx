@@ -1,120 +1,204 @@
 'use client';
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { theme } from '@/src/const';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
+import GreekMeander from '@/src/components/GreekMeander';
 
 const portfolioData = [
   {
-    title: 'portfolio.projects.moyvle.title',
-    logo: 'https://moyvle.com/assets/img/moyvle-logo.png',
-    introImage: '/images/moyvle_intro.png',
-    contents: 'portfolio.projects.moyvle.contents',
-    url: 'https://moyvle.com/',
+    title: 'MrCEO',
+    year: '2021',
+    logo: 'https://www.mrceo.kr/src/images/logo.png',
+    introImage: '/images/mrceoIntro.png',
+    url: 'https://www.mrceo.kr/',
+    stacks: ['Node.js', 'React', 'TypeScript', 'MySQL'],
+    category: 'B2B SaaS · 세무회계 자동화',
   },
   {
-    title: 'portfolio.projects.dagyeom.title',
-    logo: 'https://dagyeom.s3.ap-northeast-2.amazonaws.com/dagyeom_logo.png',
-    introImage: '/images/dagyeom_portfolio.png',
-    contents: 'portfolio.projects.dagyeom.contents',
-    url: 'https://dagyeom-devsvc.com/',
+    title: 'MyPill',
+    year: '2022',
+    logo: 'https://mypill.io/images/MYPILL_logo.png',
+    introImage: '/images/mypillIntro.png',
+    url: 'https://mypill.io/',
+    stacks: ['Node.js', 'React', 'TypeScript', 'MySQL'],
+    category: 'B2C · 헬스테크 / 건강기능식품 커머스',
   },
   {
-    title: 'portfolio.projects.thefitlove.title',
+    title: 'TheFitLove',
+    year: '2023',
     logo: '/images/thefitlove_logo.png',
     introImage: '/images/thefitlove_intro.png',
-    contents: 'portfolio.projects.thefitlove.contents',
     url: 'https://thefitlove.co.kr/',
-  },
-  {
-    title: 'portfolio.projects.mypill.title',
-    logo: 'https://mypill.io/images/MYPILL_logo.png',
-    introImage: '/images/mrceoIntro.png',
-    contents: 'portfolio.projects.mypill.contents',
-    url: 'https://mypill.io/',
-  },
-  {
-    title: 'portfolio.projects.mrceo.title',
-    logo: 'https://www.mrceo.kr/src/images/logo.png',
-    introImage: '/images/mypillIntro.png',
-    contents: 'portfolio.projects.mrceo.contents',
-    url: 'https://www.mrceo.kr/',
-  },
-  {
-    title: 'portfolio.projects.triptime.title',
-    logo: '/images/triptime_logo.png',
-    introImage: '/images/triptimeIntro.png',
-    contents: 'portfolio.projects.triptime.contents',
-    url: 'https://triptime.me/',
+    stacks: ['Node.js', 'React Native', 'TypeScript', 'MySQL'],
+    category: 'B2C · 소셜/데이팅 앱',
   },
 ];
 
 const Portfolio = () => {
-  const { t } = useTranslation();
   const isMobile = useIsMobile();
 
   return (
     <section
       id="Portfolio"
-      style={{ background: '#000000', boxSizing: 'border-box', width: '100vw', padding: isMobile ? '30px 20px' : '60px 40px' }}
+      style={{
+        background: theme.color.sepia,
+        boxSizing: 'border-box',
+        width: '100vw',
+        padding: isMobile ? '60px 20px 72px' : '80px 40px 96px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
     >
-      {/* Section title */}
-      <div
+      {/* Eyebrow label */}
+      <p
         style={{
-          display: 'inline-block',
+          margin: '0 0 14px 0',
+          fontFamily: theme.font.serif,
+          fontSize: 11,
+          letterSpacing: '4px',
+          textTransform: 'uppercase',
+          color: theme.color.gold,
+        }}
+      >
+        서비스 중인 플랫폼
+      </p>
+
+      {/* Meander accent */}
+      <div style={{ width: 140, marginBottom: 22 }}>
+        <GreekMeander id="gk-portfolio-top" strokeColor={theme.color.gold} />
+      </div>
+
+      {/* Title */}
+      <h2
+        style={{
+          margin: '0 0 60px 0',
+          fontFamily: theme.font.serif,
+          fontSize: isMobile ? 20 : 30,
           fontWeight: 700,
-          fontSize: isMobile ? 24 : 48,
-          color: '#FFFFFF',
-          borderBottom: isMobile ? '2px solid white' : '5px solid white',
-          paddingBottom: 6,
-          marginBottom: isMobile ? 10 : 20,
+          color: theme.color.parchment,
+          textAlign: 'center',
+          lineHeight: 1.6,
+          letterSpacing: '0.3px',
         }}
       >
         Portfolio
-      </div>
+      </h2>
 
-      {/* Cards grid — 3 col on desktop, 1 col on mobile */}
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {portfolioData.map((item, i) => (
+      {/* Cards */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: 24,
+          width: '100%',
+          maxWidth: 1100,
+          justifyContent: 'center',
+        }}
+      >
+        {portfolioData.map((item) => (
           <div
-            key={i}
+            key={item.title}
             onClick={() => window.open(item.url, '_blank')}
             style={{
               boxSizing: 'border-box',
-              background: 'white',
-              borderRadius: 20,
-              padding: 20,
-              cursor: 'pointer',
-              height: 493,
+              background: theme.color.parchment,
+              flex: isMobile ? undefined : '1 1 0',
+              width: isMobile ? '100%' : undefined,
               display: 'flex',
               flexDirection: 'column',
-              marginBottom: 20,
-              width: isMobile ? '100%' : 'calc(33.333% - 13.333px)',
-              marginRight: isMobile ? 0 : (i + 1) % 3 === 0 ? 0 : 20,
+              cursor: 'pointer',
+              overflow: 'hidden',
             }}
           >
-            {/* Logo */}
-            <div style={{ marginBottom: 10 }}>
-              <img
-                src={item.logo}
-                alt={t(item.title)}
-                style={{ maxWidth: 120, maxHeight: 40, objectFit: 'contain' }}
-              />
-            </div>
             {/* Intro image */}
-            <div style={{ marginBottom: 10, height: 300, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden' }}>
               <img
                 src={item.introImage}
-                alt={t(item.title)}
-                style={{ height: '100%', objectFit: 'cover' }}
+                alt={item.title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             </div>
-            {/* Title */}
-            <div style={{ marginBottom: 10, fontSize: 24, fontWeight: 'bold' }}>{t(item.title)}</div>
-            {/* Description */}
-            <div style={{ fontSize: 18, fontWeight: 300, lineHeight: 1.4 }}>{t(item.contents)}</div>
+
+            {/* Card body */}
+            <div style={{ padding: '20px 20px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {/* Logo + year row */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <img
+                  src={item.logo}
+                  alt={item.title}
+                  style={{ maxWidth: 100, maxHeight: 32, objectFit: 'contain' }}
+                />
+                <span
+                  style={{
+                    fontFamily: theme.font.serif,
+                    fontSize: 11,
+                    letterSpacing: '2px',
+                    color: theme.color.gold,
+                  }}
+                >
+                  {item.year} · 운영 중
+                </span>
+              </div>
+
+              {/* Gold rule */}
+              <div style={{ width: '100%', height: 1, background: theme.color.gold, opacity: 0.3 }} />
+
+              {/* Title */}
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: theme.font.serif,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: theme.color.sepia,
+                  letterSpacing: '0.3px',
+                }}
+              >
+                {item.title}
+              </h3>
+
+              {/* Category */}
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: theme.font.serif,
+                  fontSize: 12,
+                  color: `${theme.color.sepia}99`,
+                  lineHeight: 1.6,
+                }}
+              >
+                {item.category}
+              </p>
+
+              {/* Stack tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {item.stacks.map((stack) => (
+                  <span
+                    key={stack}
+                    style={{
+                      fontFamily: theme.font.serif,
+                      fontSize: 10,
+                      letterSpacing: '1px',
+                      color: theme.color.gold,
+                      border: `1px solid ${theme.color.gold}`,
+                      padding: '2px 8px',
+                      opacity: 0.85,
+                    }}
+                  >
+                    {stack}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
+      </div>
+
+      {/* Bottom meander */}
+      <div style={{ width: 140, marginTop: 56 }}>
+        <GreekMeander id="gk-portfolio-bottom" strokeColor={theme.color.gold} />
       </div>
     </section>
   );

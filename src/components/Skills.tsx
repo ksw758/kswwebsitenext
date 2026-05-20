@@ -6,7 +6,6 @@ import { useIsMobile } from '@/src/hooks/useIsMobile';
 
 const Skills = () => {
   const isMobile = useIsMobile();
-
   return (
     <section
       id="Skills"
