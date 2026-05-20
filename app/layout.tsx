@@ -5,6 +5,9 @@ import Providers from "@/src/providers";
 export const metadata: Metadata = {
   title: "Kim Sang Won",
   description: "Kim Sang Won's personal website — full stack developer",
+  verification: {
+    google: "L-gaRKwDCq9XUbhsfo3EThou8iGKncg_upDOT88hEb8",
+  },
 };
 
 export default function RootLayout({
