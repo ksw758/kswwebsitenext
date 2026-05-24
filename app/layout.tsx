@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/src/providers";
 import { Analytics } from "@vercel/analytics/next";
+import ChatBotButton from "@/src/components/ChatBotButton";
 
 const BASE_URL = 'https://kswwebsitenext.vercel.app';
 
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="ko">
       <body style={{ margin: 'auto', overflowX: 'hidden', overflowY: 'scroll' }}>
         <Providers>{children}</Providers>
+        <ChatBotButton />
         <Analytics />
       </body>
     </html>
