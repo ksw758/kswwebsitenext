@@ -95,9 +95,83 @@ const Contact = () => {
       <h2 style={{ margin: '0 0 12px 0', fontFamily: theme.font.serif, fontSize: isMobile ? 20 : 30, fontWeight: 700, color: theme.color.parchment, textAlign: 'center', lineHeight: 1.6 }}>
         Contact
       </h2>
-      <p style={{ margin: '0 0 48px 0', fontFamily: theme.font.serif, fontSize: isMobile ? 12 : 14, color: `${theme.color.parchment}88`, textAlign: 'center', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
+      <p style={{ margin: '0 0 36px 0', fontFamily: theme.font.serif, fontSize: isMobile ? 12 : 14, color: `${theme.color.parchment}88`, textAlign: 'center', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
         {'프로젝트 규모, 예산, 일정을 간단히 알려주시면\n빠르게 검토 후 연락드리겠습니다.'}
       </p>
+
+      {/* KakaoTalk CTA */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 680,
+          boxSizing: 'border-box',
+          background: `${theme.color.parchment}0D`,
+          border: `1px solid ${theme.color.gold}33`,
+          padding: isMobile ? '24px 20px' : '28px 40px',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: 'center',
+          gap: isMobile ? 20 : 32,
+          marginBottom: 20,
+        }}
+      >
+        {/* Text + button */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'center' : 'flex-start', gap: 10 }}>
+          <p style={{ margin: 0, fontFamily: theme.font.serif, fontSize: 10, letterSpacing: '4px', textTransform: 'uppercase', color: theme.color.gold }}>
+            빠른 상담
+          </p>
+          <p style={{ margin: 0, fontFamily: theme.font.serif, fontSize: isMobile ? 14 : 16, fontWeight: 700, color: theme.color.parchment, lineHeight: 1.5 }}>
+            카카오톡으로 바로 상담하기
+          </p>
+          <p style={{ margin: 0, fontFamily: theme.font.serif, fontSize: isMobile ? 11 : 12, color: `${theme.color.parchment}66`, lineHeight: 1.6 }}>
+            예산·기능·일정을 간단히 말씀해 주시면 빠르게 답변드립니다.
+          </p>
+          <a
+            href="https://open.kakao.com/o/st6GX9wi"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              marginTop: 6,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              background: '#FEE500',
+              color: '#191600',
+              fontFamily: theme.font.serif,
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '1.5px',
+              padding: '12px 28px',
+              textDecoration: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            <img src="/images/kakao_symbol.png" alt="kakao" style={{ width: 18, height: 18 }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            카카오톡 채팅방 입장
+          </a>
+        </div>
+
+        {/* QR code — desktop only */}
+        {!isMobile && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <img
+              src="/images/kakao_qr.jpeg"
+              alt="카카오톡 QR코드"
+              style={{ width: 110, height: 110, objectFit: 'contain', background: '#fff', padding: 6 }}
+            />
+            <p style={{ margin: 0, fontFamily: theme.font.serif, fontSize: 10, letterSpacing: '2px', color: `${theme.color.parchment}55` }}>
+              QR 스캔
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Or divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, width: '100%', maxWidth: 680, marginBottom: 20 }}>
+        <div style={{ flex: 1, height: 1, background: `${theme.color.gold}22` }} />
+        <span style={{ fontFamily: theme.font.serif, fontSize: 11, letterSpacing: '3px', color: `${theme.color.parchment}44` }}>또는</span>
+        <div style={{ flex: 1, height: 1, background: `${theme.color.gold}22` }} />
+      </div>
 
       {/* Form card */}
       <div
