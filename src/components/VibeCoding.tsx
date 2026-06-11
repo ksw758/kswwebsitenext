@@ -7,17 +7,17 @@ import GreekMeander from '@/src/components/GreekMeander';
 
 const problems = [
   {
-    icon: '⚠',
+    icon: '01',
     title: 'AI가 만든 코드, 왜 자꾸 망가질까요?',
     desc: '기능 하나 추가할 때마다 다른 곳이 깨지고, 같은 오류가 반복됩니다. 구조 없이 쌓인 코드는 AI도 고치기 어렵습니다.',
   },
   {
-    icon: '⏱',
+    icon: '02',
     title: '매번 AI에게 1시간씩 쓰고 계신가요?',
     desc: '처음부터 구조가 잡혀 있으면 같은 작업을 10분 안에 끝낼 수 있습니다. 반복되는 시간 낭비를 멈추세요.',
   },
   {
-    icon: '🔒',
+    icon: '03',
     title: '6개월 후엔 손도 못 댈 수 있습니다',
     desc: '지금은 돌아가도, 스파게티 코드는 유지보수와 확장이 불가능해집니다. 나중에 다시 만드는 비용이 훨씬 큽니다.',
   },
@@ -74,7 +74,7 @@ const VibeCoding = () => {
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontFamily: theme.font.serif, fontSize: 24, marginBottom: 14 }}>{p.icon}</div>
+            <div style={{ fontFamily: theme.font.serif, fontSize: 13, letterSpacing: '3px', color: theme.color.gold, marginBottom: 14 }}>{p.icon}</div>
             <h3 style={{ margin: '0 0 10px 0', fontFamily: theme.font.serif, fontSize: 15, fontWeight: 700, color: theme.color.gold, lineHeight: 1.5 }}>
               {p.title}
             </h3>
