@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#2A1800"/>
+      <stop offset="100%" stop-color="#1C0F00"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="500" fill="url(#bg)"/>
+
+  <!-- Outer border frame -->
+  <rect x="16" y="16" width="468" height="468" fill="none" stroke="#C8A84B" stroke-width="1.2" opacity="0.55"/>
+  <!-- Inner border frame -->
+  <rect x="28" y="28" width="444" height="444" fill="none" stroke="#C8A84B" stroke-width="0.5" opacity="0.22"/>
+
+  <!-- Corner ornaments — top-left -->
+  <polyline points="16,60 16,16 60,16" fill="none" stroke="#C8A84B" stroke-width="2.2" opacity="0.85"/>
+  <!-- top-right -->
+  <polyline points="440,16 484,16 484,60" fill="none" stroke="#C8A84B" stroke-width="2.2" opacity="0.85"/>
+  <!-- bottom-left -->
+  <polyline points="16,440 16,484 60,484" fill="none" stroke="#C8A84B" stroke-width="2.2" opacity="0.85"/>
+  <!-- bottom-right -->
+  <polyline points="484,440 484,484 440,484" fill="none" stroke="#C8A84B" stroke-width="2.2" opacity="0.85"/>
+
+  <!-- Top meander strip — simplified Greek key pattern -->
+  <g opacity="0.45" fill="none" stroke="#C8A84B" stroke-width="1.1">
+    <!-- Repeating meander unit across top -->
+    <polyline points="50,98  50,86  62,86  62,74  86,74  86,86  74,86  74,98"/>
+    <polyline points="98,98  98,86 110,86 110,74 134,74 134,86 122,86 122,98"/>
+    <polyline points="146,98 146,86 158,86 158,74 182,74 182,86 170,86 170,98"/>
+    <polyline points="194,98 194,86 206,86 206,74 230,74 230,86 218,86 218,98"/>
+    <polyline points="242,98 242,86 254,86 254,74 278,74 278,86 266,86 266,98"/>
+    <polyline points="290,98 290,86 302,86 302,74 326,74 326,86 314,86 314,98"/>
+    <polyline points="338,98 338,86 350,86 350,74 374,74 374,86 362,86 362,98"/>
+    <polyline points="386,98 386,86 398,86 398,74 422,74 422,86 410,86 410,98"/>
+    <line x1="50" y1="98" x2="450" y2="98" stroke="#C8A84B" stroke-width="0.8" opacity="0.6"/>
+    <line x1="50" y1="74" x2="50" y2="98"/>
+    <line x1="450" y1="74" x2="450" y2="98"/>
+  </g>
+
+  <!-- Category label -->
+  <text x="250" y="150"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="11"
+    fill="#C8A84B"
+    text-anchor="middle"
+    letter-spacing="7"
+    opacity="0.85">FULLSTACK  ·  8년차</text>
+
+  <!-- Thin gold rule under label -->
+  <line x1="160" y1="163" x2="340" y2="163" stroke="#C8A84B" stroke-width="0.6" opacity="0.45"/>
+
+  <!-- Main headline -->
+  <text x="250" y="228"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="54"
+    font-weight="bold"
+    fill="#F7F0DC"
+    text-anchor="middle"
+    letter-spacing="3">개발 외주</text>
+
+  <text x="250" y="288"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="54"
+    font-weight="bold"
+    fill="#F7F0DC"
+    text-anchor="middle"
+    letter-spacing="3">직접 상담</text>
+
+  <!-- Center gold rule -->
+  <line x1="130" y1="308" x2="370" y2="308" stroke="#C8A84B" stroke-width="0.8" opacity="0.5"/>
+  <!-- small diamond center accent -->
+  <polygon points="250,303 255,308 250,313 245,308" fill="#C8A84B" opacity="0.7"/>
+
+  <!-- Service tags -->
+  <text x="250" y="346"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="15"
+    fill="#C8A84B"
+    text-anchor="middle"
+    letter-spacing="5"
+    opacity="0.9">웹  ·  앱  ·  자동화</text>
+
+  <!-- Subtitle -->
+  <text x="250" y="376"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="11"
+    fill="#F7F0DC"
+    text-anchor="middle"
+    letter-spacing="2.5"
+    opacity="0.55">무료 상담  ·  빠른 납품  ·  합리적 견적</text>
+
+  <!-- Bottom meander strip -->
+  <g opacity="0.45" fill="none" stroke="#C8A84B" stroke-width="1.1">
+    <line x1="50" y1="402" x2="450" y2="402" stroke="#C8A84B" stroke-width="0.8" opacity="0.6"/>
+    <polyline points="50,402  50,414  62,414  62,426  86,426  86,414  74,414  74,402"/>
+    <polyline points="98,402  98,414 110,414 110,426 134,426 134,414 122,414 122,402"/>
+    <polyline points="146,402 146,414 158,414 158,426 182,426 182,414 170,414 170,402"/>
+    <polyline points="194,402 194,414 206,414 206,426 230,426 230,414 218,414 218,402"/>
+    <polyline points="242,402 242,414 254,414 254,426 278,426 278,414 266,414 266,402"/>
+    <polyline points="290,402 290,414 302,414 302,426 326,426 326,414 314,414 314,402"/>
+    <polyline points="338,402 338,414 350,414 350,426 374,426 374,414 362,414 362,402"/>
+    <polyline points="386,402 386,414 398,414 398,426 422,426 422,414 410,414 410,402"/>
+    <line x1="50" y1="426" x2="50" y2="402"/>
+    <line x1="450" y1="402" x2="450" y2="426"/>
+  </g>
+</svg>

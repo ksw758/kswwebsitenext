@@ -146,7 +146,9 @@ const Contact = () => {
               cursor: 'pointer',
             }}
           >
-            <img src="/images/kakao_symbol.png" alt="kakao" style={{ width: 18, height: 18 }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" clipRule="evenodd" d="M9 1C4.582 1 1 3.79 1 7.222c0 2.178 1.338 4.095 3.368 5.225L3.54 15.56a.226.226 0 0 0 .338.252l3.905-2.607A8.87 8.87 0 0 0 9 13.444c4.418 0 8-2.79 8-6.222C17 3.79 13.418 1 9 1z" fill="#191600"/>
+              </svg>
             카카오톡 채팅방 입장
           </a>
         </div>
