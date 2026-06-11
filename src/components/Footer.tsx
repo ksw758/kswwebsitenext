@@ -12,6 +12,15 @@ const SOCIAL = [
   { Icon: RocketPunchIcon, url: 'https://www.rocketpunch.com/@b00b23e820f041a1' },
 ];
 
+const BIZ_INFO = [
+  { label: '상호', value: '상원(SW)에이전츠' },
+  { label: '대표자', value: '김상원' },
+  { label: '사업자등록번호', value: '148-17-02685' },
+  { label: '사업장', value: '서울특별시 금천구 가산디지털1로 168, B동 901호 일부' },
+  { label: '연락처', value: '010-9910-7581' },
+  { label: '이메일', value: 'ksw75811@naver.com' },
+];
+
 const Footer = () => {
   const isMobile = useIsMobile();
 
@@ -49,7 +58,7 @@ const Footer = () => {
             color: theme.color.gold,
           }}
         >
-          KSW
+          상원(SW)에이전츠
         </span>
       </div>
 
@@ -75,38 +84,95 @@ const Footer = () => {
       {/* Gold rule */}
       <div
         style={{
-          width: isMobile ? 160 : 240,
+          width: isMobile ? '100%' : 640,
           height: 1,
           background: theme.color.gold,
           opacity: 0.3,
-          marginBottom: 20,
+          marginBottom: 24,
         }}
       />
 
-      {/* Info text */}
-      <p
+      {/* 사업자 정보 */}
+      <div
         style={{
-          margin: '0 0 6px 0',
-          fontFamily: theme.font.serif,
-          fontSize: 11,
-          letterSpacing: '1.5px',
-          color: `${theme.color.parchment}99`,
-          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 6,
+          alignItems: 'center',
+          marginBottom: 20,
         }}
       >
-        ksw75811@gmail.com
-      </p>
+        {BIZ_INFO.map(({ label, value }) => (
+          <p
+            key={label}
+            style={{
+              margin: 0,
+              fontFamily: theme.font.serif,
+              fontSize: 11,
+              letterSpacing: '1px',
+              color: `${theme.color.parchment}88`,
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: theme.color.gold, opacity: 0.7 }}>{label}</span>
+            {'  '}
+            {value}
+          </p>
+        ))}
+      </div>
+
+      {/* Gold rule */}
+      <div
+        style={{
+          width: isMobile ? 160 : 240,
+          height: 1,
+          background: theme.color.gold,
+          opacity: 0.2,
+          marginBottom: 16,
+        }}
+      />
+
+      {/* 이용약관 링크 */}
+      <div style={{ display: 'flex', gap: 20, marginBottom: 16 }}>
+        <a
+          href="/terms"
+          style={{
+            fontFamily: theme.font.serif,
+            fontSize: 11,
+            letterSpacing: '1.5px',
+            color: `${theme.color.parchment}66`,
+            textDecoration: 'none',
+          }}
+        >
+          이용약관
+        </a>
+        <span style={{ color: `${theme.color.parchment}33` }}>|</span>
+        <a
+          href="/privacy"
+          style={{
+            fontFamily: theme.font.serif,
+            fontSize: 11,
+            letterSpacing: '1.5px',
+            color: `${theme.color.parchment}66`,
+            textDecoration: 'none',
+          }}
+        >
+          개인정보 처리방침
+        </a>
+      </div>
+
+      {/* Copyright */}
       <p
         style={{
           margin: 0,
           fontFamily: theme.font.serif,
           fontSize: 10,
           letterSpacing: '1px',
-          color: `${theme.color.parchment}55`,
+          color: `${theme.color.parchment}44`,
           textAlign: 'center',
         }}
       >
-        © 2023–2026 James Kim · All Rights Reserved
+        © 2026 상원(SW)에이전츠 · All Rights Reserved
       </p>
     </footer>
   );
