@@ -61,9 +61,9 @@ const Header = () => {
         }}
       >
         <img
-          src="https://yt3.googleusercontent.com/ytc/AGIKgqMxDVi0Qw4sNfz9te4eDBBRXnugZzzlefHIZoE2-A=s176-c-k-c0x00ffffff-no-rj"
-          alt="logo"
-          style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }}
+          src="/images/logo.svg"
+          alt="상원(SW)에이전츠 로고"
+          style={{ width: 44, height: 44, borderRadius: 6, objectFit: 'cover' }}
         />
         {!isMobile && (
           <>
@@ -78,7 +78,7 @@ const Header = () => {
                 fontWeight: 400,
               }}
             >
-              KSW
+              상원(SW)에이전츠
             </span>
           </>
         )}

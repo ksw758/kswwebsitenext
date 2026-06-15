@@ -10,7 +10,7 @@ const slides = [
     image: '/images/MainFirstSection/Parthenon._Photo_taken_in_2023.jpg',
     title: '기초가 비즈니스를 결정합니다',
     subtitle:
-      '홈페이지는 하나의 건물과 같습니다.\n대충 지어진 건물은 쉽게 흔들리고, 완성 후에도 끊임없이 손이 갑니다.\n반면 처음부터 기초를 탄탄히 세운 건물은 오랫동안 제 역할을 해냅니다.\n8년 이상의 홈페이지 설계 및 구축 노하우를 바탕으로, 처음부터 제대로 지어진 홈페이지를 만들어드립니다.',
+      '홈페이지는 하나의 건물과 같습니다.\n대충 지어진 건물은 쉽게 흔들리고, 완성 후에도 끊임없이 손이 갑니다.\n반면 처음부터 기초를 탄탄히 세운 건물은 오랫동안 제 역할을 해냅니다.\n9년 이상의 홈페이지 설계 및 구축 노하우를 바탕으로, 처음부터 제대로 지어진 홈페이지를 만들어드립니다.',
   },
   {
     image: '/images/MainFirstSection/Death-of-Socrates-canvas-Jacques-Louis-David-New-1787.webp',
@@ -181,14 +181,37 @@ const Main = () => {
         >
           {slides[slideIndex].subtitle}
         </p>
+
+        {/* CTA 버튼 */}
+        <button
+          onClick={() => {
+            const el = document.getElementById('Contact');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          style={{
+            marginTop: isMobile ? 20 : 28,
+            padding: isMobile ? '10px 24px' : '13px 32px',
+            fontFamily: theme.font.serif,
+            fontSize: isMobile ? 11 : 13,
+            letterSpacing: '2.5px',
+            textTransform: 'uppercase',
+            color: theme.color.sepia,
+            background: theme.color.gold,
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: 600,
+          }}
+        >
+          무료 상담 문의
+        </button>
       </div>
 
       {/* Dot indicators — bottom-right */}
       <div
         style={{
           position: 'absolute',
-          right: 24,
-          bottom: 24,
+          right: 34,
+          bottom: 44,
           display: 'flex',
           flexDirection: 'column',
           gap: 8,

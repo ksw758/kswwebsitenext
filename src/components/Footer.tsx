@@ -8,7 +8,7 @@ import GreekMeander from '@/src/components/GreekMeander';
 
 const SOCIAL = [
   { Icon: GithubIcon,      url: 'https://github.com/ksw7581' },
-  { Icon: LinkedInIcon,    url: 'https://www.linkedin.com/in/james-kim-41b4671b3/' },
+  { Icon: LinkedInIcon,    url: 'https://www.linkedin.com/in/sangwon-kim-dev/' },
   { Icon: RocketPunchIcon, url: 'https://www.rocketpunch.com/@b00b23e820f041a1' },
 ];
 
@@ -43,11 +43,11 @@ const Footer = () => {
 
       {/* Logo + wordmark */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-        <img
-          src="https://yt3.googleusercontent.com/ytc/AGIKgqMxDVi0Qw4sNfz9te4eDBBRXnugZzzlefHIZoE2-A=s176-c-k-c0x00ffffff-no-rj"
-          alt="logo"
-          style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }}
-        />
+          <img
+              src="/images/logo.svg"
+              alt="상원(SW)에이전츠 로고"
+              style={{ width: 44, height: 44, borderRadius: 6, objectFit: 'cover' }}
+          />
         <div style={{ width: 1, height: 28, background: theme.color.gold, opacity: 0.6 }} />
         <span
           style={{
@@ -159,6 +159,17 @@ const Footer = () => {
         >
           개인정보 처리방침
         </a>
+      </div>
+
+      {/* SSL 배지 */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill={`${theme.color.gold}55`} stroke={theme.color.gold} strokeWidth="1.5" strokeOpacity="0.7"/>
+          <path d="M9 12l2 2 4-4" stroke={theme.color.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.9"/>
+        </svg>
+        <span style={{ fontFamily: theme.font.serif, fontSize: 10, letterSpacing: '1.5px', color: `${theme.color.parchment}55` }}>
+          SSL SECURED
+        </span>
       </div>
 
       {/* Copyright */}

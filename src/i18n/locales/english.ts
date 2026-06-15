@@ -3,7 +3,7 @@ export const english = {
         intro: {
             line1: "From data design to web server deployment for business systems",
             line2: "With systematic work scheduling and proactive communication",
-            line3: "Based on {{years}} years of web programming experience, we create fast and reliable business models."
+            line3: "Based on 9 years of web programming experience, we create fast and reliable business models."
         }
     },
     career: {
