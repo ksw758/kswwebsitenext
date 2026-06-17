@@ -14,7 +14,9 @@
   "dependencies": {
     "@ai-sdk/openai": "^3.0.65",
     "@ai-sdk/react": "^3.0.193",
+    "@prisma/client": "^6.19.3",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "^2.4.0",
     "ai": "^6.0.191",
     "axios": "^1.16.0",
     "html2canvas": "^1.4.1",
@@ -24,6 +26,7 @@
     "moment": "^2.30.1",
     "next": "16.2.6",
     "nodemailer": "^8.0.7",
+    "prisma": "^6.19.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-i18next": "^17.0.7",
