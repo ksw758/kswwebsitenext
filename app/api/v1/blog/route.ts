@@ -2,6 +2,7 @@ import { prisma } from '@/src/lib/prisma';
 import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 import { BlogCategory } from '@/src/generated/prisma';
+import { postToLinkedIn } from '@/src/lib/linkedin';
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,7 +43,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(blog, { status: 201 });
+    // LinkedIn 동시 포스팅 (실패해도 블로그 저장은 유지)
+    const linkedinResult = await postToLinkedIn(title, content, blob.url, hashtags).catch(e => ({
+      error: String(e),
+    }));
+
+    return NextResponse.json({ blog, linkedin: linkedinResult }, { status: 201 });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ message: String(e) }, { status: 500 });
