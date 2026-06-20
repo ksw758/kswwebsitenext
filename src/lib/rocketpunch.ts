@@ -87,7 +87,7 @@ async function uploadToS3(presignedUrl: string, imageBuffer: Buffer): Promise<vo
   const res = await fetch(presignedUrl, {
     method: 'PUT',
     headers: { 'Content-Type': 'image/png' },
-    body: imageBuffer,
+    body: new Uint8Array(imageBuffer),
   });
   if (!res.ok) throw new Error(`S3 업로드 실패: ${res.status} ${await res.text()}`);
 }
