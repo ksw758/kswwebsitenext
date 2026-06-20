@@ -40,7 +40,8 @@ export default async function BlogPage() {
   });
 
   return (
-    <main style={{ maxWidth: 900, margin: '0 auto', padding: '80px 24px' }}>
+    <main style={{ minHeight: '100vh', background: theme.color.sepia }}>
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 24px' }}>
       <p style={{ fontFamily: theme.font.serif, fontSize: 10, letterSpacing: '4px', textTransform: 'uppercase', color: theme.color.gold, marginBottom: 16 }}>
         Blog
       </p>
@@ -124,6 +125,7 @@ export default async function BlogPage() {
           ))}
         </div>
       )}
+    </div>
     </main>
   );
 }

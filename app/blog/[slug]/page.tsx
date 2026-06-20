@@ -46,13 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  const blogs = await prisma.blog.findMany({
-    where: { slug: { not: null } },
-    select: { slug: true },
-  });
-  return blogs.map(b => ({ slug: b.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function BlogDetailPage({ params }: Props) {
   const { slug } = await params;
@@ -60,7 +54,8 @@ export default async function BlogDetailPage({ params }: Props) {
   if (!blog) notFound();
 
   return (
-    <main style={{ maxWidth: 780, margin: '0 auto', padding: '80px 24px' }}>
+    <main style={{ minHeight: '100vh', background: theme.color.sepia }}>
+    <div style={{ maxWidth: 780, margin: '0 auto', padding: '80px 24px' }}>
       {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
@@ -124,6 +119,7 @@ export default async function BlogDetailPage({ params }: Props) {
           ))}
         </div>
       )}
+    </div>
     </main>
   );
 }
