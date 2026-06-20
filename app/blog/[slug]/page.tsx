@@ -16,7 +16,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const blog = await prisma.blog.findUnique({ where: { slug } });
   if (!blog) return {};
 
@@ -49,7 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const dynamic = 'force-dynamic';
 
 export default async function BlogDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const blog = await prisma.blog.findUnique({ where: { slug } });
   if (!blog) notFound();
 
