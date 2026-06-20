@@ -17,14 +17,17 @@ enum BlogCategory {
 }
 
 model Blog {
-  blog_id   Int          @id @default(autoincrement())
-  title     String       @unique
-  content   String
-  thumbnail String
-  category  BlogCategory
-  counts    Int
-  hashtags  String[]
-  create_at DateTime     @default(now())
+  blog_id     Int          @id @default(autoincrement())
+  slug        String?      @unique
+  title       String       @unique
+  description String?
+  content     String
+  thumbnail   String
+  category    BlogCategory
+  counts      Int
+  hashtags    String[]
+  create_at   DateTime     @default(now())
+  update_at   DateTime     @default(now()) @updatedAt
 }
 
 model User {

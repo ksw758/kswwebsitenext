@@ -11,6 +11,13 @@ const CATEGORIES = [
   { value: 'SHOW', label: '방송/공연' },
 ] as const;
 
+const PLATFORMS = [
+  { key: 'blog', label: '개인 블로그', icon: '🏠' },
+  { key: 'linkedin', label: 'LinkedIn', icon: '💼' },
+  { key: 'rocketpunch', label: '로켓펀치', icon: '🚀' },
+] as const;
+
+type Platform = typeof PLATFORMS[number]['key'];
 type Category = typeof CATEGORIES[number]['value'];
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -46,6 +53,10 @@ export default function BlogWriteForm() {
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [showPlatformModal, setShowPlatformModal] = useState(false);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<Set<Platform>>(
+    new Set(['blog', 'linkedin', 'rocketpunch'])
+  );
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,12 +73,25 @@ export default function BlogWriteForm() {
     return null;
   };
 
-  const handleSubmit = async () => {
+  const handleSaveClick = () => {
     const err = validate();
     if (err) { setErrorMsg(err); setStatus('error'); return; }
-
-    setStatus('loading');
     setErrorMsg('');
+    setShowPlatformModal(true);
+  };
+
+  const togglePlatform = (key: Platform) => {
+    setSelectedPlatforms(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const handleSubmit = async () => {
+    setShowPlatformModal(false);
+    setStatus('loading');
 
     const formData = new FormData();
     formData.append('title', title);
@@ -75,6 +99,7 @@ export default function BlogWriteForm() {
     formData.append('category', category);
     formData.append('hashtags', hashtags);
     formData.append('thumbnail', image!);
+    formData.append('platforms', JSON.stringify(Array.from(selectedPlatforms)));
 
     try {
       const res = await fetch('/api/v1/blog', { method: 'POST', body: formData });
@@ -180,10 +205,10 @@ export default function BlogWriteForm() {
         </p>
       )}
 
-      {/* 제출 */}
+      {/* 제출 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <button
-          onClick={handleSubmit}
+          onClick={handleSaveClick}
           disabled={status === 'loading'}
           style={{
             fontFamily: theme.font.serif,
@@ -202,6 +227,97 @@ export default function BlogWriteForm() {
           {status === 'loading' ? '저장 중...' : '블로그 저장'}
         </button>
       </div>
+
+      {/* 플랫폼 선택 모달 */}
+      {showPlatformModal && (
+        <div
+          onClick={() => setShowPlatformModal(false)}
+          style={{
+            position: 'fixed', inset: 0,
+            background: 'rgba(0,0,0,0.7)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: theme.color.sepia,
+              border: `1px solid ${theme.color.gold}44`,
+              borderRadius: 8,
+              padding: '40px 48px',
+              minWidth: 340,
+            }}
+          >
+            <p style={{ fontFamily: theme.font.serif, fontSize: 10, letterSpacing: '3px', textTransform: 'uppercase', color: theme.color.gold, marginBottom: 12 }}>
+              업로드 플랫폼
+            </p>
+            <h2 style={{ fontFamily: theme.font.serif, fontSize: 20, color: theme.color.parchment, marginBottom: 28, fontWeight: 600 }}>
+              어떤 플랫폼에 업로드할까요?
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 36 }}>
+              {PLATFORMS.map(p => (
+                <label
+                  key={p.key}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 14,
+                    cursor: 'pointer',
+                    padding: '14px 16px',
+                    border: `1px solid ${selectedPlatforms.has(p.key) ? theme.color.gold : theme.color.gold + '33'}`,
+                    borderRadius: 4,
+                    background: selectedPlatforms.has(p.key) ? `${theme.color.gold}11` : 'transparent',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedPlatforms.has(p.key)}
+                    onChange={() => togglePlatform(p.key)}
+                    style={{ accentColor: theme.color.gold, width: 16, height: 16, cursor: 'pointer' }}
+                  />
+                  <span style={{ fontSize: 18 }}>{p.icon}</span>
+                  <span style={{ fontFamily: theme.font.serif, fontSize: 14, color: theme.color.parchment }}>
+                    {p.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button
+                onClick={() => setShowPlatformModal(false)}
+                style={{
+                  flex: 1,
+                  fontFamily: theme.font.serif, fontSize: 11, letterSpacing: '2px',
+                  textTransform: 'uppercase', color: `${theme.color.parchment}88`,
+                  background: 'transparent',
+                  border: `1px solid ${theme.color.parchment}33`,
+                  padding: '12px 0', cursor: 'pointer', borderRadius: 0,
+                }}
+              >
+                취소
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={selectedPlatforms.size === 0}
+                style={{
+                  flex: 2,
+                  fontFamily: theme.font.serif, fontSize: 11, letterSpacing: '2px',
+                  textTransform: 'uppercase', color: theme.color.gold,
+                  background: 'transparent',
+                  border: `1px solid ${theme.color.gold}`,
+                  padding: '12px 0', cursor: selectedPlatforms.size === 0 ? 'not-allowed' : 'pointer',
+                  opacity: selectedPlatforms.size === 0 ? 0.4 : 1,
+                  borderRadius: 0,
+                }}
+              >
+                업로드
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
