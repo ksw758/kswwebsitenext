@@ -7,9 +7,9 @@ import { theme } from '@/src/const';
 import GreekMeander from '@/src/components/GreekMeander';
 
 const SOCIAL = [
-  { Icon: GithubIcon,      url: 'https://github.com/ksw7581' },
+  { Icon: GithubIcon,      url: 'https://github.com/ksw758' },
   { Icon: LinkedInIcon,    url: 'https://www.linkedin.com/in/sangwon-kim-dev/' },
-  { Icon: RocketPunchIcon, url: 'https://www.rocketpunch.com/@b00b23e820f041a1' },
+  { Icon: RocketPunchIcon, url: 'https://www.rocketpunch.com/@ksw75811' },
 ];
 
 const BIZ_INFO = [
