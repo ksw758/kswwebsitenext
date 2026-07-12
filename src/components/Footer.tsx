@@ -16,7 +16,7 @@ const BIZ_INFO = [
   { label: '상호', value: '상원(SW)에이전츠' },
   { label: '대표자', value: '김상원' },
   { label: '사업자등록번호', value: '148-17-02685' },
-  { label: '사업장', value: '서울특별시 금천구 가산디지털1로 168, B동 901호 일부' },
+  { label: '사업장', value: '서울특별시 금천구 가산디지털1로 168, B동 901호' },
   { label: '연락처', value: '010-9910-7581' },
   { label: '이메일', value: 'ksw75811@naver.com' },
 ];
