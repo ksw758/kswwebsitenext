@@ -86,7 +86,7 @@ const MyResume = () => {
       }
     };
 
-    await renderElements(['my-resume-page1-1', 'my-resume-page1-2', 'my-resume-page1-3']);
+    await renderElements(['my-resume-page1-1', 'my-resume-page1-2', 'my-resume-page1-3', 'my-resume-page1-4']);
     await renderElements(['my-resume-page2-1', 'my-resume-page2-2'], true);
     pdf.save('resume.pdf');
     setIsDownload(false);
@@ -153,9 +153,12 @@ const MyResume = () => {
               {'안녕하세요. 8년차 Full-Stack JavaScript 개발자 James Kim입니다.\n' +
                 'FE는 React와 React Native 기반 프로젝트를, BE는 NodeJS (Express), NestJS, 그리고 일부 Python(FastAPI) 개발 경험이 있습니다.\n' +
                 '또한 7년 이상 AWS EC2 기반 서버 배포 및 운영 경험이 있으며, ALB와 Let\'s Encrypt를 통한 SSL 인증, S3를 활용한 파일 관리, RDS 기반 데이터베이스 운영을 수행했습니다.\n' +
-                '데이터베이스는 주로 MySQL을 사용하였으며, MongoDB와 PostgreSQL도 프로젝트 경험이 있습니다.\n' +
+                '데이터베이스는 주로 MySQL을 사용하였으며, MongoDB와 PostgreSQL, Prisma ORM 기반 스키마 설계 경험도 있습니다.\n' +
                 '가장 익숙한 언어는 JavaScript로, 모듈화, 리팩토링, MDN 문서 기반의 함수·객체 활용에 익숙합니다.\n' +
-                '최근에는 RAG기반으로 Q&A 챗봇 시스템을 학습해서 여러 서비스에 활용하고 있습니다.'}
+                '최근에는 RAG기반으로 Q&A 챗봇 시스템을 학습해서 여러 서비스에 활용하고 있습니다.\n' +
+                '실서비스 운영 경험을 바탕으로 AWS 장애 대응 및 비용 최적화 컨설팅도 다수 수행하고 있으며,\n' +
+                '엑셀 매크로(VBA)와 파이썬 스크립트를 활용한 업무 자동화 작업도 진행합니다.\n' +
+                '또한 바이브코딩(AI 기반 코드 생성) 결과물의 구조 정리와 인증/인가 누락, SQL Injection·XSS 등 보안 취약점 점검도 전문 분야로 다루고 있습니다.'}
             </p>
           </div>
 
@@ -196,6 +199,62 @@ const MyResume = () => {
               </div>
             </div>
             <p style={s.paragraph}>{t('resume.employment_history.cmes.description')}</p>
+          </div>
+
+          {/* ── Page 1-4 : Portfolio ── */}
+          <div id="my-resume-page1-4" style={s.sectionBlock}>
+            <h1 style={s.h1}>포트폴리오</h1>
+
+            {[
+              {
+                logo: '/portfolios/mrceo/mrceo_main.png',
+                title: 'MrCEO — B2B SaaS · 세무회계 자동화',
+                period: '2021 · 운영 중',
+                stack: 'Node.js, React, TypeScript, MySQL',
+                desc: '홈택스·여신협회 크롤링 데이터로 세무회계 자동화 및 병원 근태·자료관리를 지원하는 SaaS 플랫폼',
+              },
+              {
+                logo: '/portfolios/mypill/mypill_main.png',
+                title: 'MyPill — B2C · 헬스테크 / 건강기능식품 커머스',
+                period: '2022 · 운영 중',
+                stack: 'Node.js, React, TypeScript, MySQL',
+                desc: '건강검진 기록과 AI 분석 기반으로 개인 맞춤 영양제를 추천·정기배송하는 구독형 커머스',
+              },
+              {
+                logo: '/portfolios/thefitlove/fitlove_main.png',
+                title: 'TheFitLove — B2C · 소셜/데이팅 앱',
+                period: '2023 · 운영 중',
+                stack: 'Node.js, React Native, TypeScript, MySQL',
+                desc: '신뢰도 기반 매칭 알고리즘과 인앱결제를 갖춘 React Native 소개팅 앱',
+              },
+              {
+                logo: '/portfolios/doctorlab/drlab_main.png',
+                title: 'DrLab — B2B SaaS · 병원 경영 데이터 분석',
+                period: '2024.10 - 2025.8 · 구축 완료',
+                stack: 'NestJS, React, TypeScript, PostgreSQL',
+                desc: '병원 경영 대시보드·만족도 설문·부가서비스 연계를 통합한 병원 경영 데이터 분석 플랫폼',
+              },
+              {
+                logo: '/portfolios/kdocfinder/kdoc_main.png',
+                title: 'K·DOC — B2C · 글로벌 병원 매칭·예약 플랫폼',
+                period: '2025.11 ~ · 진행 중',
+                stack: 'NestJS, Prisma, PostgreSQL, React',
+                desc: '예산·지역·시술 조건 기반 병원 매칭·예약과 SNS 콘텐츠 관리를 제공하는 글로벌 한국 병원 예약 플랫폼',
+              },
+            ].map((project) => (
+              <React.Fragment key={project.title}>
+                <div style={s.companyRow}>
+                  <div style={s.logoBox}>
+                    <img alt={project.title} src={project.logo} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  </div>
+                  <div>
+                    <h2 style={s.h2Company}>{project.title}</h2>
+                    <p style={s.periodText}>{project.period}</p>
+                  </div>
+                </div>
+                <p style={s.paragraph}>{`${project.stack}\n${project.desc}`}</p>
+              </React.Fragment>
+            ))}
           </div>
 
           {/* ── Page 2-1 : Education ── */}

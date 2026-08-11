@@ -5,6 +5,7 @@ import axios from 'axios';
 import { theme } from '@/src/const';
 import GreekMeander from '@/src/components/GreekMeander';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
+import { trackLead } from '@/src/lib/metaPixel';
 
 const PRIVACY_TEXT =
   '개인 및 기업정보의 수집·이용에 관한 사항\n' +
@@ -61,6 +62,7 @@ const Contact = () => {
     setStatus('loading');
     try {
       await axios.post('/api/v1/inquiry', form);
+      trackLead();
       setStatus('success');
       setForm({ name: '', phone: '', company: '', email: '', contents: '', isAgreement: false });
     } catch {
