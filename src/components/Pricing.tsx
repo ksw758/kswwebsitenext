@@ -30,7 +30,26 @@ const plans = [
   },
 ];
 
-const techServices = [
+type Tier = {
+  badge: string;
+  grade: string;
+  level: string;
+  price: number;
+  tagline: string;
+  bullets: string[];
+  highlight?: boolean;
+  footnote?: string;
+};
+
+type TechService = {
+  category: string;
+  subtitle: string;
+  tags: string[];
+  note?: string;
+  tiers: Tier[];
+};
+
+const techServices: TechService[] = [
   {
     category: 'AWS 장애대응 · 비용 최적화',
     subtitle: '8년 실무 운영 경험 · EC2 · S3 · RDS · Route53',
