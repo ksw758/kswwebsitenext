@@ -61,6 +61,7 @@ export default function PrivacyPage() {
         <ul style={{ paddingLeft: 20, marginTop: 8 }}>
           <li>의뢰인이 사전에 동의한 경우</li>
           <li>법령의 규정에 의하거나 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</li>
+          <li>광고 성과 측정 및 잠재고객 매칭을 위해 이메일, 전화번호 등을 암호화(해시)된 형태로 Meta(Advanced Matching)에 제공하는 경우</li>
         </ul>
       </>)}
 

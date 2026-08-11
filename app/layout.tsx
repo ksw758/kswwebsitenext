@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "9년차 풀스택 개발자의 1인 개발 에이전시. 웹사이트·앱 MVP·바이브코딩 최적화 외주 문의 환영합니다.",
   verification: {
     google: "L-gaRKwDCq9XUbhsfo3EThou8iGKncg_upDOT88hEb8",
+    other: {
+      "facebook-domain-verification": "l410cimgz9g2a7lzx4vgddzr7djb5w",
+    },
   },
   openGraph: {
     title: "상원(SW)에이전츠 — 웹/앱 개발 외주",
