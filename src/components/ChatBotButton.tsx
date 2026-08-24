@@ -209,8 +209,8 @@ const ChatBotButton = () => {
                             type="submit"
                             disabled={isLoading || !input.trim()}
                             style={{
-                                width: 44,
-                                height: 44,
+                                width: 36,
+                                height: 36,
                                 borderRadius: '50%',
                                 border: 'none',
                                 backgroundColor:

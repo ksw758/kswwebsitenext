@@ -241,11 +241,10 @@ const Portfolio = () => {
                 }}
                 style={{
                   alignSelf: 'flex-start',
-                  marginTop: 4 - 10,
-                  marginLeft: -6,
+                  marginTop: 4,
                   background: 'none',
                   border: 'none',
-                  padding: '10px 6px',
+                  padding: 0,
                   fontFamily: theme.font.serif,
                   fontSize: 12,
                   letterSpacing: '0.5px',

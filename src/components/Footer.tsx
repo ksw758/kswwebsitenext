@@ -70,17 +70,13 @@ const Footer = () => {
             onClick={() => window.open(url, '_blank')}
             style={{
               cursor: 'pointer',
-              width: 44,
-              height: 44,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              width: isMobile ? 32 : 40,
+              height: isMobile ? 32 : 40,
               flexShrink: 0,
+              opacity: 0.8,
             }}
           >
-            <div style={{ width: isMobile ? 32 : 40, height: isMobile ? 32 : 40, opacity: 0.8 }}>
-              <Icon />
-            </div>
+            <Icon />
           </div>
         ))}
       </div>
@@ -137,14 +133,10 @@ const Footer = () => {
       />
 
       {/* 이용약관 링크 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 16 }}>
+      <div style={{ display: 'flex', gap: 20, marginBottom: 16 }}>
         <a
           href="/terms"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: 44,
-            padding: '0 4px',
             fontFamily: theme.font.serif,
             fontSize: 11,
             letterSpacing: '1.5px',
@@ -158,10 +150,6 @@ const Footer = () => {
         <a
           href="/privacy"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: 44,
-            padding: '0 4px',
             fontFamily: theme.font.serif,
             fontSize: 11,
             letterSpacing: '1.5px',

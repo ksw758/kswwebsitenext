@@ -136,7 +136,6 @@ const Contact = () => {
               marginTop: 6,
               display: 'inline-flex',
               alignItems: 'center',
-              minHeight: 44,
               gap: 8,
               background: '#FEE500',
               color: '#191600',
@@ -241,12 +240,12 @@ const Contact = () => {
           >
             {PRIVACY_TEXT}
           </div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 0', cursor: 'pointer' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
             <input
               type="checkbox"
               checked={form.isAgreement}
               onChange={(e) => setForm({ ...form, isAgreement: e.target.checked })}
-              style={{ width: 18, height: 18, flexShrink: 0, accentColor: theme.color.gold }}
+              style={{ width: 16, height: 16, accentColor: theme.color.gold }}
             />
             <span style={{ fontFamily: theme.font.serif, fontSize: 12, color: `${theme.color.parchment}99`, letterSpacing: '1px' }}>
               개인·기업 정보 수집·이용에 동의합니다.
@@ -272,10 +271,6 @@ const Contact = () => {
             onClick={onSubmit}
             disabled={status === 'loading'}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: 44,
               fontFamily: theme.font.serif,
               fontSize: 11,
               letterSpacing: '3px',

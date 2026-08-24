@@ -191,10 +191,6 @@ const Main = () => {
           style={{
             marginTop: isMobile ? 20 : 28,
             padding: isMobile ? '10px 24px' : '13px 32px',
-            minHeight: isMobile ? 44 : undefined,
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             fontFamily: theme.font.serif,
             fontSize: isMobile ? 11 : 13,
             letterSpacing: '2.5px',
@@ -218,7 +214,7 @@ const Main = () => {
           bottom: 44,
           display: 'flex',
           flexDirection: 'column',
-          gap: 12,
+          gap: 8,
         }}
       >
         {slides.map((_, i) => (
@@ -227,28 +223,16 @@ const Main = () => {
             onClick={() => handleDotClick(i)}
             aria-label={`슬라이드 ${i + 1}`}
             style={{
-              width: 44,
-              height: 44,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'none',
+              width: isMobile ? 10 : 14,
+              height: isMobile ? 10 : 14,
+              borderRadius: '50%',
               border: 'none',
               cursor: 'pointer',
               padding: 0,
+              backgroundColor: i === slideIndex ? theme.color.gold : theme.color.goldFaded,
+              transition: 'background-color 300ms ease',
             }}
-          >
-            <span
-              style={{
-                width: isMobile ? 10 : 14,
-                height: isMobile ? 10 : 14,
-                borderRadius: '50%',
-                display: 'block',
-                backgroundColor: i === slideIndex ? theme.color.gold : theme.color.goldFaded,
-                transition: 'background-color 300ms ease',
-              }}
-            />
-          </button>
+          />
         ))}
       </div>
 
