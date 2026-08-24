@@ -163,6 +163,10 @@ const VibeCoding = () => {
             onClick={() => setActiveTab(i)}
             style={{
               padding: isMobile ? '8px 14px' : '10px 22px',
+              minHeight: isMobile ? 44 : undefined,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               borderRadius: 999,
               border: `1px solid ${i === activeTab ? theme.color.gold : `${theme.color.sepia}33`}`,
               background: i === activeTab ? theme.color.gold : 'transparent',

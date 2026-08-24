@@ -51,15 +51,18 @@ const PortfolioLightbox = ({ images, index, onClose }: PortfolioLightboxProps) =
         onClick={onClose}
         style={{
           position: 'absolute',
-          top: isMobile ? 16 : 28,
-          right: isMobile ? 16 : 28,
+          top: isMobile ? 12 : 24,
+          right: isMobile ? 12 : 24,
           background: 'none',
           border: `1px solid ${theme.color.gold}`,
           color: theme.color.parchment,
           fontFamily: theme.font.serif,
           fontSize: 16,
-          width: 36,
-          height: 36,
+          width: 44,
+          height: 44,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           cursor: 'pointer',
         }}
         aria-label="닫기"
@@ -136,8 +139,11 @@ const arrowStyle: React.CSSProperties = {
   color: theme.color.parchment,
   fontFamily: theme.font.serif,
   fontSize: 24,
-  width: 44,
-  height: 44,
+  width: 48,
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   flexShrink: 0,
   cursor: 'pointer',
 };

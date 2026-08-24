@@ -196,6 +196,10 @@ const Pricing = () => {
             onClick={() => setActiveCategory(i)}
             style={{
               padding: isMobile ? '8px 14px' : '10px 22px',
+              minHeight: isMobile ? 44 : undefined,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               borderRadius: 999,
               border: `1px solid ${i === activeCategory ? theme.color.gold : `${theme.color.gold}44`}`,
               background: i === activeCategory ? theme.color.gold : 'transparent',
