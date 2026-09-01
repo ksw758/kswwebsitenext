@@ -175,6 +175,23 @@ const ChatBotButton = () => {
                             </div>
                         )}
 
+                        {status === 'error' && (
+                            <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+                                <div
+                                    style={{
+                                        padding: '9px 13px',
+                                        borderRadius: '16px 16px 16px 4px',
+                                        backgroundColor: '#3a1a0a',
+                                        color: theme.color.parchment,
+                                        fontSize: 12,
+                                        lineHeight: 1.6,
+                                    }}
+                                >
+                                    요청이 많아요. 잠시 후 다시 시도해 주세요.
+                                </div>
+                            </div>
+                        )}
+
                         <div ref={bottomRef} style={{height: 14}}/>
                     </div>
 

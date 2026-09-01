@@ -1,11 +1,71 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { isSameOrigin } from '@/src/lib/guard';
+import { checkRateLimit } from '@/src/lib/rateLimit';
+
+const RATE_LIMIT = 3;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[\d\s+\-]{8,20}$/;
+
+const MAX = { name: 50, company: 100, email: 254, contents: 5000 };
 
 export async function POST(req: NextRequest) {
-  const { name, phone, company, email, contents } = await req.json();
+  // 1. 동일 출처만 허용
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
+  }
+
+  // 2. 허니팟 — 봇이 채우는 숨김 필드. 채워졌으면 조용히 성공 처리하고 발송하지 않는다.
+  if (typeof body.website === 'string' && body.website.trim() !== '') {
+    return NextResponse.json({ ok: true });
+  }
+
+  // 3. IP당 레이트리밋
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown';
+  const rl = checkRateLimit(`inquiry:${ip}`, RATE_LIMIT, RATE_WINDOW_MS);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: '문의가 너무 잦습니다. 잠시 후 다시 시도해 주세요.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
+    );
+  }
+
+  // 4. 형식 검증
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
+  const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
+  const company = typeof body.company === 'string' ? body.company.trim() : '';
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  const contents = typeof body.contents === 'string' ? body.contents.trim() : '';
+  const isAgreement = body.isAgreement === true;
 
   if (!name || !phone || !email || !contents) {
     return NextResponse.json({ error: '필수 항목이 누락되었습니다.' }, { status: 400 });
+  }
+  if (!isAgreement) {
+    return NextResponse.json({ error: '개인정보 수집·이용에 동의해 주세요.' }, { status: 400 });
+  }
+  if (!EMAIL_RE.test(email) || !PHONE_RE.test(phone)) {
+    return NextResponse.json({ error: '이메일 또는 연락처 형식을 확인해 주세요.' }, { status: 400 });
+  }
+  if (
+    name.length > MAX.name ||
+    company.length > MAX.company ||
+    email.length > MAX.email ||
+    contents.length > MAX.contents
+  ) {
+    return NextResponse.json({ error: '입력값이 너무 깁니다.' }, { status: 400 });
   }
 
   const transporter = nodemailer.createTransport({

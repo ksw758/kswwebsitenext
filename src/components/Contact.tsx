@@ -46,9 +46,11 @@ const Contact = () => {
     company: '',
     email: '',
     contents: '',
+    website: '', // 허니팟 — 실제 사용자는 비워둠
     isAgreement: false,
   });
   const [status, setStatus] = useState<Status>('idle');
+  const [errorMsg, setErrorMsg] = useState('오류가 발생했습니다. 다시 시도해주세요.');
 
   const set = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -56,6 +58,7 @@ const Contact = () => {
 
   const onSubmit = async () => {
     if (!form.isAgreement) {
+      setErrorMsg('개인정보 수집·이용에 동의해주세요.');
       setStatus('error');
       return;
     }
@@ -64,8 +67,16 @@ const Contact = () => {
       await axios.post('/api/v1/inquiry', form);
       trackLead();
       setStatus('success');
-      setForm({ name: '', phone: '', company: '', email: '', contents: '', isAgreement: false });
-    } catch {
+      setForm({ name: '', phone: '', company: '', email: '', contents: '', website: '', isAgreement: false });
+    } catch (e) {
+      const code = axios.isAxiosError(e) ? e.response?.status : undefined;
+      setErrorMsg(
+        code === 429
+          ? '문의가 너무 잦습니다. 잠시 후 다시 시도해 주세요.'
+          : code === 400
+            ? '입력값을 확인해 주세요. (이메일 · 연락처 형식)'
+            : '오류가 발생했습니다. 다시 시도해주세요.',
+      );
       setStatus('error');
     }
   };
@@ -188,6 +199,20 @@ const Contact = () => {
           boxSizing: 'border-box',
         }}
       >
+        {/* 허니팟 — 화면·스크린리더에서 숨김. 봇이 채우면 서버가 조용히 무시 */}
+        <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}>
+          <label>
+            Website
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.website}
+              onChange={set('website')}
+            />
+          </label>
+        </div>
+
         {/* Row 1: 이름 + 연락처 */}
         <div style={{ display: 'flex', gap: 20, marginBottom: 24, flexDirection: isMobile ? 'column' : 'row' }}>
           <div style={{ flex: 1 }}>
@@ -261,7 +286,7 @@ const Contact = () => {
         )}
         {status === 'error' && (
           <p style={{ fontFamily: theme.font.serif, fontSize: 13, color: '#C0392B', textAlign: 'center', marginBottom: 16 }}>
-            {!form.isAgreement ? '개인정보 수집·이용에 동의해주세요.' : '오류가 발생했습니다. 다시 시도해주세요.'}
+            {errorMsg}
           </p>
         )}
 

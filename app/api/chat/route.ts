@@ -1,9 +1,24 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
+import { checkRateLimit } from '@/src/lib/rateLimit';
+import { isSameOrigin } from '@/src/lib/guard';
 
 const openai = createOpenAI({
   apiKey: process.env.OPEN_AI_KEY,
 });
+
+const MAX_MESSAGES = 20;
+const MAX_CHARS_PER_MESSAGE = 2000;
+const MAX_OUTPUT_TOKENS = 500;
+const RATE_LIMIT = 15;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+function messageText(m: UIMessage): string {
+  return (m.parts ?? [])
+    .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+    .map((p) => p.text)
+    .join('');
+}
 
 const SYSTEM_PROMPT = `You are an assistant for James Sang Won Kim (김상원), a full-stack developer based in Bucheon, South Korea.
 Your role is to answer questions from potential clients about his background, skills, projects, and services in a warm and professional tone.
@@ -67,12 +82,47 @@ State Management: Recoil, Immer
 - Only append {{SCROLL_TO_CONTACT}} when the user clearly wants to make contact or place an order. Do not append it for general questions.`;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  // 1. 동일 출처 요청만 허용 (브라우저 외 클라이언트·타 사이트 임베드 차단)
+  if (!isSameOrigin(req)) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  // 2. IP당 레이트리밋
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown';
+  const rl = checkRateLimit(ip, RATE_LIMIT, RATE_WINDOW_MS);
+  if (!rl.ok) {
+    return Response.json(
+      { error: '요청이 많습니다. 잠시 후 다시 시도해 주세요.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
+    );
+  }
+
+  // 3. 입력 크기 제한 (요청당 토큰 비용 상한)
+  let messages: UIMessage[];
+  try {
+    ({ messages } = await req.json());
+  } catch {
+    return Response.json({ error: 'Bad request' }, { status: 400 });
+  }
+  if (
+    !Array.isArray(messages) ||
+    messages.length === 0 ||
+    messages.length > MAX_MESSAGES
+  ) {
+    return Response.json({ error: 'Bad request' }, { status: 400 });
+  }
+  if (messages.some((m) => messageText(m).length > MAX_CHARS_PER_MESSAGE)) {
+    return Response.json({ error: 'Message too long' }, { status: 400 });
+  }
 
   const result = streamText({
     model: openai('gpt-4o-mini'),
     system: SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
   });
 
   return result.toUIMessageStreamResponse();

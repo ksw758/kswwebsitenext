@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { BlogCategory } from '@/src/generated/prisma';
 import { postToLinkedIn } from '@/src/lib/linkedin';
 import { postToRocketpunch } from '@/src/lib/rocketpunch';
+import { isBlogWriteEnabled } from '@/src/lib/guard';
 
 export async function GET() {
   try {
@@ -28,6 +29,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!isBlogWriteEnabled()) return new NextResponse(null, { status: 404 });
+
   try {
     const formData = await req.formData();
 
