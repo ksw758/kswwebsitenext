@@ -10,8 +10,11 @@ export function isBlogWriteEnabled(): boolean {
 }
 
 /**
- * 동일 출처 요청인지 확인한다. 브라우저는 cross-origin POST에 항상 `Origin`을 붙이므로
- * 정상적인 사이트 내 요청은 통과하고, 스크립트·타 사이트 임베드·비브라우저 클라이언트는 걸러진다.
+ * 요청의 `Origin` 헤더 호스트가 `Host` 헤더와 일치하는지 확인한다.
+ * 막아주는 것: 다른 사이트에서의 cross-origin 호출(CSRF성 요청), 타 사이트 iframe 임베드,
+ * `Origin`을 안 붙이는 게으른 스크래퍼.
+ * 막아주지 못하는 것: `Origin`/`Host`를 직접 세팅하는 curl·스크립트. 즉 인증 경계가 아니다.
+ * 스크립트 남용의 실질 방어선은 레이트리밋과 입력 크기 제한, 그리고 OpenAI 예산 하드캡이다.
  * 프로덕션·프리뷰·localhost·향후 커스텀 도메인 모두 무설정으로 대응된다.
  */
 export function isSameOrigin(req: Request): boolean {

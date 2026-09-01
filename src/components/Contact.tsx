@@ -199,18 +199,16 @@ const Contact = () => {
           boxSizing: 'border-box',
         }}
       >
-        {/* 허니팟 — 화면·스크린리더에서 숨김. 봇이 채우면 서버가 조용히 무시 */}
+        {/* 허니팟 — 화면·스크린리더에서 숨김. 봇이 채우면 서버가 [의심] 표시 후 사람이 판단 */}
         <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}>
-          <label>
-            Website
-            <input
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-              value={form.website}
-              onChange={set('website')}
-            />
-          </label>
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={form.website}
+            onChange={set('website')}
+          />
         </div>
 
         {/* Row 1: 이름 + 연락처 */}

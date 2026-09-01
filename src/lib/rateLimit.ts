@@ -32,3 +32,20 @@ export function checkRateLimit(
   hits.set(key, timestamps);
   return { ok: true, retryAfterSec: 0 };
 }
+
+/**
+ * Vercel에서 신뢰 가능한 클라이언트 IP를 뽑는다.
+ * `x-forwarded-for`의 맨 앞 항목은 클라이언트가 임의로 붙일 수 있으므로 레이트리밋 키로 쓰면 안 된다.
+ * Vercel이 세팅하는 `x-real-ip`를 우선 쓰고, 없으면 `x-forwarded-for`의 마지막(프록시가 덧붙인 실제) 항목을 쓴다.
+ */
+export function clientIp(req: Request): string {
+  const realIp = req.headers.get('x-real-ip')?.trim();
+  if (realIp) return realIp;
+
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) {
+    const parts = xff.split(',').map((s) => s.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
+  return 'unknown';
+}

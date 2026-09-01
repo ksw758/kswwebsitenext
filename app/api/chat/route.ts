@@ -1,6 +1,6 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
-import { checkRateLimit } from '@/src/lib/rateLimit';
+import { checkRateLimit, clientIp } from '@/src/lib/rateLimit';
 import { isSameOrigin } from '@/src/lib/guard';
 
 const openai = createOpenAI({
@@ -9,7 +9,8 @@ const openai = createOpenAI({
 
 const MAX_MESSAGES = 20;
 const MAX_CHARS_PER_MESSAGE = 2000;
-const MAX_OUTPUT_TOKENS = 500;
+const MAX_TOTAL_CHARS = 24000;
+const MAX_OUTPUT_TOKENS = 800;
 const RATE_LIMIT = 15;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 
@@ -76,7 +77,7 @@ State Management: Recoil, Immer
 
 --- GUIDELINES ---
 - Do not make up information not listed above.
-- Be concise, helpful, and professional.
+- Be concise, helpful, and professional. Keep replies under ~250 Korean characters (or ~150 English words). If more detail is needed, give the key points and guide the user to the contact form rather than writing a long answer.
 - If the user expresses intent to outsource a project, hire James, ask about pricing/timeline, or request a consultation, respond warmly and guide them to fill out the contact form. At the very end of your response (after all text), append the exact token: {{SCROLL_TO_CONTACT}}
   Example: "네, 문의 폼으로 안내해 드릴게요! 아래 Contact 섹션에서 프로젝트 내용을 남겨주시면 빠르게 검토 후 연락드리겠습니다. {{SCROLL_TO_CONTACT}}"
 - Only append {{SCROLL_TO_CONTACT}} when the user clearly wants to make contact or place an order. Do not append it for general questions.`;
@@ -87,12 +88,8 @@ export async function POST(req: Request) {
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  // 2. IP당 레이트리밋
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown';
-  const rl = checkRateLimit(ip, RATE_LIMIT, RATE_WINDOW_MS);
+  // 2. IP당 레이트리밋 (신뢰 가능한 IP로 키잉)
+  const rl = checkRateLimit(clientIp(req), RATE_LIMIT, RATE_WINDOW_MS);
   if (!rl.ok) {
     return Response.json(
       { error: '요청이 많습니다. 잠시 후 다시 시도해 주세요.' },
@@ -114,16 +111,29 @@ export async function POST(req: Request) {
   ) {
     return Response.json({ error: 'Bad request' }, { status: 400 });
   }
-  if (messages.some((m) => messageText(m).length > MAX_CHARS_PER_MESSAGE)) {
+  // 텍스트 외 파트(이미지·파일 등)는 이 챗봇에서 쓰지 않으므로 거부 — 크기 우회 방지
+  if (messages.some((m) => (m.parts ?? []).some((p) => p.type !== 'text'))) {
+    return Response.json({ error: 'Bad request' }, { status: 400 });
+  }
+  const totalChars = messages.reduce((sum, m) => sum + messageText(m).length, 0);
+  if (
+    totalChars > MAX_TOTAL_CHARS ||
+    messages.some((m) => messageText(m).length > MAX_CHARS_PER_MESSAGE)
+  ) {
     return Response.json({ error: 'Message too long' }, { status: 400 });
   }
 
-  const result = streamText({
-    model: openai('gpt-4o-mini'),
-    system: SYSTEM_PROMPT,
-    messages: await convertToModelMessages(messages),
-    maxOutputTokens: MAX_OUTPUT_TOKENS,
-  });
+  let result;
+  try {
+    result = streamText({
+      model: openai('gpt-4o-mini'),
+      system: SYSTEM_PROMPT,
+      messages: await convertToModelMessages(messages),
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+    });
+  } catch {
+    return Response.json({ error: 'Bad request' }, { status: 400 });
+  }
 
   return result.toUIMessageStreamResponse();
 }
