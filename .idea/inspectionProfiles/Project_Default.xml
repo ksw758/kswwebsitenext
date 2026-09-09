@@ -355,6 +355,7 @@
     <inspection_tool class="GherkinBrokenTableInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GherkinMisplacedBackground" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GherkinScenarioToScenarioOutline" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="GitGraph" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="GithubFunctionSignatureValidation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="GrazieInspection" enabled="true" level="GRAMMAR_ERROR" enabled_by_default="true" />
     <inspection_tool class="GrazieInspectionRunner" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -711,6 +712,7 @@
     <inspection_tool class="MarkdownLinkDestinationWithSpaces" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MarkdownNoTableBorders" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MarkdownOutdatedTableOfContents" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="MarkdownTablePipeInCodeSpan" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="MarkdownUnresolvedFileReference" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MarkdownUnresolvedHeaderReference" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MarkdownUnresolvedLinkLabel" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -962,6 +964,7 @@
     <inspection_tool class="TextLabelInSwitchStatementJS" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <scope name="Project Files" level="WARNING" enabled="true" />
     </inspection_tool>
+    <inspection_tool class="ThemeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ThisExpressionReferencesGlobalObjectJS" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <scope name="Project Files" level="WARNING" enabled="true" />
     </inspection_tool>
@@ -1032,6 +1035,7 @@
     <inspection_tool class="TypeScriptValidateTypes" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <scope name="Project Files" level="WARNING" enabled="true" />
     </inspection_tool>
+    <inspection_tool class="UndeclaredGeneric" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UndefinedAction" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UndefinedJob" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="UndefinedNestedVariableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -1065,12 +1069,14 @@
       <scope name="Project Files" level="WARNING" enabled="true" />
     </inspection_tool>
     <inspection_tool class="UnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnsupportedDirective" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="UnterminatedStatementJS" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <scope name="Project Files" level="WARNING" enabled="true">
         <option name="ignoreSemicolonAtEndOfBlock" value="true" />
       </scope>
       <option name="ignoreSemicolonAtEndOfBlock" value="true" />
     </inspection_tool>
+    <inspection_tool class="UnusedAttribute" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedCatchParameterJS" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <scope name="Project Files" level="WARNING" enabled="true">
         <option name="m_ignoreCatchBlocksWithComments" value="false" />

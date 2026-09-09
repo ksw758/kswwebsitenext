@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 960" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#FCFDFF"/>
+      <stop offset="0.55" stop-color="#F4F7FC"/>
+      <stop offset="1" stop-color="#ECF2FA"/>
+    </linearGradient>
+    <radialGradient id="sglow-blue" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3182F6" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#3182F6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sglow-mint" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#20C997" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#20C997" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sglow-amber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FCA64D" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#FCA64D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sglow-violet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#845EF7" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#845EF7" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="sdots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#8AA6CC" fill-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  <rect width="1440" height="960" fill="url(#sbg)"/>
+  <rect width="1440" height="960" fill="url(#sdots)"/>
+
+  <ellipse cx="210" cy="170" rx="380" ry="320" fill="url(#sglow-blue)"/>
+  <ellipse cx="1320" cy="90" rx="400" ry="340" fill="url(#sglow-mint)"/>
+  <ellipse cx="1220" cy="900" rx="440" ry="360" fill="url(#sglow-amber)"/>
+  <ellipse cx="90" cy="920" rx="360" ry="320" fill="url(#sglow-violet)"/>
+
+  <g stroke="#C7D7EE" stroke-opacity="0.55" fill="none" stroke-width="1.5">
+    <path d="M-120 690 C 320 550, 720 760, 1560 590"/>
+    <path d="M-120 772 C 380 650, 820 850, 1560 690"/>
+  </g>
+</svg>
