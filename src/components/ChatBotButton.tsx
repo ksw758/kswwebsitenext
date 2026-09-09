@@ -3,11 +3,13 @@
 import {useChat} from '@ai-sdk/react';
 import {DefaultChatTransport, UIMessage} from 'ai';
 import {useEffect, useRef, useState} from 'react';
+import {usePathname} from 'next/navigation';
 import {theme} from '@/src/const';
 
 const transport = new DefaultChatTransport({api: '/api/chat'});
 
 const ChatBotButton = () => {
+    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState('');
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -39,6 +41,9 @@ const ChatBotButton = () => {
         sendMessage({text: input});
         setInput('');
     };
+
+    // /survey 플로우에서는 챗봇 버튼 숨김
+    if (pathname?.startsWith('/survey')) return null;
 
     return (
         <>

@@ -167,7 +167,7 @@ export const Questions: QuestionType[] = [
         title: '원하시는 서비스를 설명하는 키워드를 최소 3개만 입력해주세요.',
         type: 'tags',
         min: 3,
-        placeholder: '예: 예약, 결제, 관리자 대시보드',
+        placeholder: '예약, 결제, 관리자 대시보드, 등등',
     },
 ];
 

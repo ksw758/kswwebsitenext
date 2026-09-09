@@ -282,6 +282,7 @@ const Form = () => {
                                 <FxTags
                                     value={curArr}
                                     onChange={(v) => commit({ ...answers, [q.id]: v })}
+                                    onEnter={() => canProceed && goNext()}
                                     placeholder={q.placeholder}
                                 />
                                 <p style={{ margin: '4px 2px 0', fontSize: 12, color: MUTED }}>

@@ -11,7 +11,7 @@ import React, { useEffect, useRef } from 'react';
  */
 
 const CSS = `
-.swv-hero{max-width:620px;margin:0 auto;width:100%}
+.swv-hero{max-width:760px;margin:0 auto;width:100%}
 .swv-hero svg{width:100%;height:auto;display:block;overflow:visible}
 .swv-hero text{font-family:inherit;fill:#212529}
 .swv-title{font-size:12.5px;font-weight:700}

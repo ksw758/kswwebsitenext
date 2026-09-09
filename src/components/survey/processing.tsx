@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const DEFAULT_MESSAGES = [
     '설문 내용을 정리하고 있어요',
-    '작업 분해(WBS)를 만들고 있어요',
+    'WBS일정을 만들고 있어요',
     '예상 비용을 계산하고 있어요',
     'DB 스키마를 설계하고 있어요',
     '결과를 다듬고 있어요',
@@ -48,7 +48,7 @@ const isReduced = () =>
 export default function Processing({
     messages = DEFAULT_MESSAGES,
     progress,
-    headline = 'AI가 결과를 만들고 있어요',
+    headline = '필요한 결과들을 수집하는 중입니다.',
 }: ProcessingProps) {
     const [msgIdx, setMsgIdx] = useState(0);
     const wrapRef = useRef<HTMLDivElement>(null);

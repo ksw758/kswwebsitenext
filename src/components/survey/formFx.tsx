@@ -491,8 +491,9 @@ export const FxTextInput: React.FC<{
 export const FxTags: React.FC<{
     value: string[];
     onChange: (v: string[]) => void;
+    onEnter?: () => void; // 입력 draft 가 비었을 때 Enter → 상위로 위임(제출 등)
     placeholder?: string;
-}> = ({ value, onChange, placeholder }) => {
+}> = ({ value, onChange, onEnter, placeholder }) => {
     const [draft, setDraft] = useState('');
     const [focused, setFocused] = useState(false);
     const anim = useRef<FocusAnim>(null);
@@ -576,9 +577,10 @@ export const FxTags: React.FC<{
                         if (draft.trim()) add(draft);
                     }}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
                             e.preventDefault();
-                            add(draft);
+                            if (draft.trim()) add(draft); // 입력 중이면 태그 추가
+                            else onEnter?.(); // 비었으면 제출로 위임
                         } else if (e.key === 'Backspace' && !draft && value.length) {
                             onChange(value.slice(0, -1));
                         }
