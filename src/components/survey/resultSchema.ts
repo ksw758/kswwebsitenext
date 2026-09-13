@@ -10,20 +10,21 @@ import type { ResultData } from './resultTypes';
 
 const Money = z.object({
     label: z.string(),
-    amount: z.number().int().describe('원(KRW) 단위 정수'),
+    amount: z.number().int().describe('원(KRW) 단위 정수. "만원" 등으로 축약하지 말 것 (예: 2.7 아니라 27000)'),
 });
 
 const Column = z.object({
     name: z.string().describe('컬럼명 (snake_case)'),
     type: z.string().describe('타입 (uuid, varchar, int, timestamptz, enum 등)'),
-    note: z.string().optional().describe('PK / FK → table / unique / enum 값 등'),
+    // OpenAI 구조화 출력(strict)은 모든 키가 required 여야 하므로 optional 대신 nullable.
+    note: z.string().nullable().describe('PK / FK → table / unique / enum 값 등 · 없으면 null'),
 });
 
 export const ResultSchema = z.object({
     // ── 무료 공개 ──
     headline: z
         .string()
-        .describe('한 줄 요약. "OO 서비스 · 단계 · 약 N주 · 최소~최대 만원" 형식'),
+        .describe('한 줄 요약. "OO 서비스 · 단계 · 약 N주" 형식. 금액은 넣지 말 것(시스템이 붙임)'),
     feasible: z.boolean().describe('원칙적으로 true. 불가한 부분은 outOfScope 로'),
     summary: z.string().describe('2~4문장, 고객이 읽는 톤의 개략 설명'),
     outOfScope: z.array(z.string()).describe('이번 범위 밖 · 별도 논의 항목 (2차 확장 등)'),
@@ -54,7 +55,6 @@ export const ResultSchema = z.object({
         low: z.number().int().describe('최소 예상 개발비(원), 10만원 단위 라운딩'),
         high: z.number().int().describe('최대 예상 개발비(원), 10만원 단위 라운딩'),
     }),
-    monthlyNote: z.string().describe('"월 약 N원 · 초기 개발비와 별도" 형식'),
     // ── 게이트 이후 ──
     breakdown: z
         .array(Money)

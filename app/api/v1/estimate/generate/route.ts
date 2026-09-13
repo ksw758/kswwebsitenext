@@ -8,19 +8,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateText, Output } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { isSameOrigin } from '@/src/lib/guard';
-import { checkRateLimit, clientIp } from '@/src/lib/rateLimit';
+import { checkRateLimit, clientFingerprint } from '@/src/lib/rateLimit';
 import { ResultSchema } from '@/src/components/survey/resultSchema';
 import {
     answersToBrief,
     ESTIMATE_SYSTEM_PROMPT,
     PAST_PROJECTS_CONTEXT,
+    priceBand,
+    fitBreakdown,
+    fitWbs,
+    headlineWithPrice,
 } from '@/src/components/survey/estimatePrompt';
+import * as util from "node:util";
 
 // OpenAI 호출 여유 (기본은 배포 플랫폼 설정값)
 export const maxDuration = 60;
 
-const RATE_LIMIT = 5;
-const RATE_WINDOW_MS = 10 * 60 * 1000;
+// 같은 사용자(IP+UA)당 견적 생성은 이 창 안에서 최대 3회. 비싼 LLM 호출 반복을 막는다.
+const RATE_LIMIT = 3;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
 
 const openai = createOpenAI({ apiKey: process.env.OPEN_AI_KEY });
 
@@ -29,10 +35,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const rl = checkRateLimit(`estimate:${clientIp(req)}`, RATE_LIMIT, RATE_WINDOW_MS);
+    const rl = checkRateLimit(`estimate:${clientFingerprint(req)}`, RATE_LIMIT, RATE_WINDOW_MS);
     if (!rl.ok) {
         return NextResponse.json(
-            { error: '요청이 너무 잦습니다. 잠시 후 다시 시도해 주세요.' },
+            { error: '견적 생성은 일정 시간 내 최대 3회까지만 가능합니다. 잠시 후 다시 시도해 주세요.' },
             { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
         );
     }
@@ -44,29 +50,55 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
     }
     const answers = (body as { answers?: Record<string, unknown> } | null)?.answers;
+console.log(util.inspect(answers, { depth: null }));
     if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
         return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
     }
 
-    const brief = answersToBrief(answers as Record<string, string | string[]>);
+    const rawAnswers = answers as Record<string, string | string[]>;
+    const brief = answersToBrief(rawAnswers);
     if (brief.length === 0) {
         return NextResponse.json({ error: '설문 답변이 비어 있습니다.' }, { status: 400 });
     }
 
+    // 개발비 범위는 설문 답변만으로 코드에서 확정한다 (LLM 이 상한을 자주 무시함).
+    const band = priceBand(rawAnswers);
+
     try {
         // AI SDK v6: generateObject 는 deprecated → generateText + Output.object
         const { output } = await generateText({
-            model: openai('gpt-4o'),
+            model: openai('gpt-5.4'),
             system: `${ESTIMATE_SYSTEM_PROMPT}\n\n${PAST_PROJECTS_CONTEXT}`,
-            prompt: JSON.stringify({ survey: brief }, null, 2),
+            prompt: JSON.stringify(
+                { survey: brief, priceEnvelope: { low: band.low, high: band.high } },
+                null,
+                2,
+            ),
             output: Output.object({
                 schema: ResultSchema,
                 name: 'ProjectEstimate',
                 description: '설문 기반 프로젝트 견적 · WBS · 범위 · 예상 DB 스키마',
             }),
-            maxOutputTokens: 4000,
+            // gpt-5 계열은 reasoning 토큰도 이 예산에 포함되므로 여유 있게 잡는다.
+            maxOutputTokens: 8000,
+            // 숫자 계산(가격·기간)은 이미 priceBand/fitBreakdown/fitWbs 로 코드가 강제하므로,
+            // LLM 은 형식·문구·라벨링 규칙만 따르면 됨 → medium 은 과했음. low 로 지연시간을 줄인다.
+            providerOptions: { openai: { reasoningEffort: 'low' } },
         });
-        return NextResponse.json(output);
+
+        // LLM 출력이 범위를 벗어나도 최종 금액·기간은 코드가 강제한다.
+        const fitted = fitBreakdown(output.breakdown, band);
+        const fittedWbs = fitWbs(output.wbs, output.totalDays);
+        const result = {
+            ...output,
+            headline: headlineWithPrice(output.headline, band),
+            price: { low: band.low, high: band.high },
+            breakdown: fitted.breakdown,
+            total: fitted.total,
+            wbs: fittedWbs.wbs,
+            totalDays: fittedWbs.totalDays,
+        };
+        return NextResponse.json(result);
     } catch (e) {
         console.error('[estimate/generate]', e);
         return NextResponse.json({ error: '견적 생성에 실패했습니다.' }, { status: 500 });

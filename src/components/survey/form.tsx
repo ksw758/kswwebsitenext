@@ -9,11 +9,6 @@ import Processing from './processing';
 const { INK, MUTED } = FORM_COLORS;
 const FADE = 210; // ms — 질문 전환 페이드
 
-// TODO: 테스트용. true 면 제출 시 API 호출 없이 10초 Processing 후 결과(MOCK)로 이동.
-//       실제 OpenAI 연동 확인 시 false 로.
-const MOCK_SUBMIT = true;
-const MOCK_PROCESSING_MS = 10_000;
-
 const visibleFor = (a: Answers): QuestionType[] => Questions.filter((q) => !q.showIf || q.showIf(a));
 
 const Form = () => {
@@ -121,17 +116,6 @@ const Form = () => {
 
         // 폼 페이드아웃 후 대기(Processing) 화면으로
         window.setTimeout(() => setStage('processing'), FADE);
-
-        if (MOCK_SUBMIT) {
-            // API 호출 없이 10초 Processing 노출 후 결과(MOCK)로 이동
-            try {
-                sessionStorage.removeItem('survey:result'); // MOCK 폴백 강제
-            } catch {
-                /* 무시 */
-            }
-            window.setTimeout(() => router.push('/survey/result'), MOCK_PROCESSING_MS);
-            return;
-        }
 
         try {
             const res = await fetch('/api/v1/estimate/generate', {

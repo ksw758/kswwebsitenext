@@ -50,11 +50,11 @@ const MOCK: ResultData = {
         { layer: '배포', choice: 'GitHub → CI → AWS' },
     ],
     wbs: [
-        { phase: '기획 · 설계', task: '요구사항 정리, 화면 설계, DB 설계', days: 7 },
-        { phase: 'UI 개발', task: '공통 컴포넌트, 예약 플로우, 마이페이지', days: 15 },
-        { phase: '백엔드 · API', task: '인증, 예약 / 결제 API, 관리자 API', days: 14 },
-        { phase: '관리자 페이지', task: '예약 관리, 회원 관리, 기본 통계', days: 7 },
-        { phase: 'QA · 배포', task: '통합 테스트, 버그 수정, 배포 세팅', days: 7 },
+        { phase: '기획·검토', task: '요구사항 정리, 범위 확정, 레퍼런스 검토', days: 5 },
+        { phase: '설계', task: '화면 설계(Figma 기준), DB·API 설계', days: 5 },
+        { phase: '개발', task: '예약 플로우, 결제, 관리자, 마이페이지 구현', days: 15 },
+        { phase: '테스트(QA)', task: '통합 테스트, 버그 수정, 배포 세팅', days: 20 },
+        { phase: '유지보수', task: '오픈 초기 안정화, 인수인계', days: 5 },
     ],
     totalDays: 50,
     includedByDefault: [
@@ -76,7 +76,6 @@ const MOCK: ResultData = {
         '납품 전 자체 QA 후 인수인계',
     ],
     price: { low: 8_000_000, high: 12_000_000 },
-    monthlyNote: '월 약 3.5만원 (인프라) · 초기 개발비와 별도',
     breakdown: [
         { label: '기획 · 설계', amount: 1_200_000 },
         { label: '프론트엔드 개발', amount: 3_600_000 },
@@ -177,6 +176,98 @@ const td: React.CSSProperties = {
     verticalAlign: 'top',
 };
 
+// ───────────── WBS 간트 (주차별 색칠 테이블, WBS_Example.png 참고) ─────────────
+const DAYS_PER_WEEK = 5;
+
+const WbsGantt: React.FC<{ wbs: ResultData['wbs']; totalDays: number; isMobile: boolean }> = ({
+    wbs,
+    totalDays,
+    isMobile,
+}) => {
+    const { rows, weeks } = useMemo(() => {
+        let acc = 0;
+        const rows = wbs.map((r) => {
+            const start = acc;
+            acc += Math.max(1, r.days);
+            const startWeek = Math.floor(start / DAYS_PER_WEEK);
+            const endWeek = Math.max(startWeek, Math.ceil(acc / DAYS_PER_WEEK) - 1);
+            return { ...r, startWeek, endWeek };
+        });
+        const weeks = Math.max(1, Math.ceil(acc / DAYS_PER_WEEK), Math.ceil(totalDays / DAYS_PER_WEEK));
+        return { rows, weeks };
+    }, [wbs, totalDays]);
+
+    const weekW = isMobile ? 22 : 30;
+    const labelW = isMobile ? 104 : 128;
+    const taskW = 190;
+
+    const hcell: React.CSSProperties = {
+        padding: '6px 6px',
+        fontSize: 11,
+        fontWeight: 600,
+        color: C.muted,
+        borderBottom: `1px solid ${C.line}`,
+    };
+
+    return (
+        <div style={{ overflowX: 'auto' }}>
+            <table
+                style={{
+                    borderCollapse: 'collapse',
+                    tableLayout: 'fixed',
+                    minWidth: labelW + (isMobile ? 0 : taskW) + weeks * weekW,
+                }}
+            >
+                <colgroup>
+                    <col style={{ width: labelW }} />
+                    {!isMobile && <col style={{ width: taskW }} />}
+                    {Array.from({ length: weeks }, (_, i) => (
+                        <col key={i} style={{ width: weekW }} />
+                    ))}
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style={{ ...hcell, textAlign: 'left' }}>단계</th>
+                        {!isMobile && <th style={{ ...hcell, textAlign: 'left' }}>주요 작업</th>}
+                        {Array.from({ length: weeks }, (_, i) => (
+                            <th key={i} style={{ ...hcell, textAlign: 'center', borderLeft: `1px solid ${C.line}` }}>
+                                {i + 1}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map((r, ri) => (
+                        <tr key={`${r.phase}-${ri}`}>
+                            <td style={{ ...td, fontWeight: 600, color: C.ink }}>
+                                {r.phase}
+                                <div style={{ fontWeight: 400, fontSize: 11, color: C.muted, marginTop: 2 }}>
+                                    {r.days}일{isMobile ? ` · ${r.task}` : ''}
+                                </div>
+                            </td>
+                            {!isMobile && <td style={td}>{r.task}</td>}
+                            {Array.from({ length: weeks }, (_, i) => {
+                                const on = i >= r.startWeek && i <= r.endWeek;
+                                return (
+                                    <td
+                                        key={i}
+                                        style={{
+                                            borderTop: `1px solid ${C.line}`,
+                                            borderLeft: `1px solid ${C.line}`,
+                                            background: on ? C.blue : 'transparent',
+                                            padding: 0,
+                                        }}
+                                    />
+                                );
+                            })}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
 const MoneyTable: React.FC<{ rows: Money[]; suffix?: string }> = ({ rows, suffix = '' }) => (
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <tbody>
@@ -220,6 +311,110 @@ const Result = () => {
     const [unlocked, setUnlocked] = useState(false);
     const [form, setForm] = useState({ name: '', phone: '', email: '', comment: '', agree: false });
     const gatedRef = useRef<HTMLDivElement>(null);
+    const pageRef = useRef<HTMLDivElement>(null);
+    const [pdfState, setPdfState] = useState<'idle' | 'busy' | 'error'>('idle');
+
+    // 최상위 블록(헤더 + 각 섹션 + 연락처 폼)을 개별 캡처해 jsPDF 에 배치한다.
+    // 페이지에 안 들어가는 블록은 다음 페이지에서 시작 → 페이지 경계에서 섹션이 잘리지 않음.
+    const handleDownloadPdf = async () => {
+        const node = pageRef.current;
+        if (!node || pdfState === 'busy') return;
+        setPdfState('busy');
+        try {
+            const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+                import('html2canvas'),
+                import('jspdf'),
+            ]);
+
+            const blocks = [
+                node.firstElementChild, // "예상 결과" 다크 헤더
+                ...node.querySelectorAll('section, form'), // 각 섹션 + 연락처 폼 (문서 순서)
+            ].filter((el): el is HTMLElement => el instanceof HTMLElement && !el.dataset.pdfHide);
+
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pageW = pdf.internal.pageSize.getWidth();
+            const pageH = pdf.internal.pageSize.getHeight();
+            const M = 8; // 페이지 여백(mm)
+            const contentW = pageW - M * 2;
+            const maxBlockH = pageH - M * 2;
+            const pageBottom = pageH - M;
+            const gap = 4; // 블록 간 간격(mm)
+
+            let y = M;
+            let pageHasContent = false;
+
+            for (const block of blocks) {
+                const canvas = await html2canvas(block, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    windowWidth: node.scrollWidth,
+                    onclone: (doc) => {
+                        doc.querySelectorAll<HTMLElement>('[data-pdf-hide]').forEach((el) => {
+                            el.style.display = 'none';
+                        });
+                    },
+                });
+                const imgW = contentW;
+                const imgH = (canvas.height * imgW) / canvas.width;
+                const data = canvas.toDataURL('image/png');
+
+                if (imgH <= maxBlockH) {
+                    // 페이지에 통째로 들어가는 블록: 남은 높이에 안 맞으면 새 페이지
+                    if (pageHasContent && y + imgH > pageBottom) {
+                        pdf.addPage();
+                        y = M;
+                    }
+                    pdf.addImage(data, 'PNG', M, y, imgW, imgH, undefined, 'FAST');
+                    y += imgH + gap;
+                    pageHasContent = true;
+                } else {
+                    // 페이지보다 큰 단일 블록: 새 페이지에서 시작해 이 블록만 세로 슬라이스
+                    if (pageHasContent) {
+                        pdf.addPage();
+                        y = M;
+                    }
+                    const pxPerMm = canvas.height / imgH;
+                    let sy = 0;
+                    let remMm = imgH;
+                    while (remMm > 0) {
+                        const chunkMm = Math.min(maxBlockH, remMm);
+                        const chunkPx = Math.round(chunkMm * pxPerMm);
+                        const c = document.createElement('canvas');
+                        c.width = canvas.width;
+                        c.height = chunkPx;
+                        c.getContext('2d')?.drawImage(
+                            canvas,
+                            0,
+                            sy,
+                            canvas.width,
+                            chunkPx,
+                            0,
+                            0,
+                            canvas.width,
+                            chunkPx,
+                        );
+                        pdf.addImage(c.toDataURL('image/png'), 'PNG', M, M, imgW, chunkMm, undefined, 'FAST');
+                        sy += chunkPx;
+                        remMm -= chunkMm;
+                        if (remMm > 0) pdf.addPage();
+                    }
+                    y = pageH; // 다음 블록은 무조건 새 페이지
+                    pageHasContent = true;
+                }
+            }
+
+            const d = new Date();
+            const stamp =
+                `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}` +
+                `${String(d.getDate()).padStart(2, '0')}`;
+            pdf.save(`상원SW에이전츠_견적서_${stamp}.pdf`);
+            setPdfState('idle');
+        } catch (err) {
+            console.error('[pdf]', err);
+            setPdfState('error');
+        }
+    };
 
     const canSubmit = !!form.name && !!form.phone && !!form.email && form.agree;
 
@@ -254,6 +449,7 @@ const Result = () => {
     return (
         <SectionFxProvider>
         <div
+            ref={pageRef}
             style={{
                 maxWidth: 760,
                 margin: '0 auto',
@@ -314,41 +510,12 @@ const Result = () => {
                 </div>
             </Section>
 
-            {/* 3. WBS — 테이블 형태 (WBS_Example.png 참고) */}
+            {/* 3. WBS — 주차별 색칠 간트 테이블 (WBS_Example.png 참고) */}
             <Section
-                title="WBS · 작업 분해"
-                hint={`예상 총 개발 기간 약 ${data.totalDays}일 (약 ${Math.round(data.totalDays / 5)}주)`}
+                title="WBS · 개발 일정"
+                hint={`예상 총 개발 기간 약 ${data.totalDays}일 · 상단 숫자는 주차, 파란 칸이 진행 구간`}
             >
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 460 }}>
-                        <thead>
-                            <tr>
-                                {['단계', '주요 작업', '기간'].map((h) => (
-                                    <th
-                                        key={h}
-                                        style={{
-                                            padding: '0 12px 8px',
-                                            fontSize: 11,
-                                            color: C.muted,
-                                            textAlign: h === '기간' ? 'right' : 'left',
-                                        }}
-                                    >
-                                        {h}
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.wbs.map((r) => (
-                                <tr key={r.phase}>
-                                    <td style={{ ...td, fontWeight: 600, color: C.ink, whiteSpace: 'nowrap' }}>{r.phase}</td>
-                                    <td style={td}>{r.task}</td>
-                                    <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>{r.days}일</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <WbsGantt wbs={data.wbs} totalDays={data.totalDays} isMobile={isMobile} />
             </Section>
 
             {/* 4. 프로젝트 범위 관리 (project_details.png 참고) */}
@@ -373,7 +540,6 @@ const Result = () => {
                 <div style={{ fontSize: isMobile ? 22 : 26, fontWeight: 800, color: C.ink }}>
                     약 {won(data.price.low)} ~ {won(data.price.high)}
                 </div>
-                <div style={{ marginTop: 6, fontSize: 13, color: C.sub }}>{data.monthlyNote}</div>
             </Section>
 
             {/* ── 게이트 폼 ── */}
@@ -482,9 +648,9 @@ const Result = () => {
 
                         <button
                             type="button"
-                            onClick={() => {
-                                /* TODO: jspdf 로 견적서 PDF 생성 */
-                            }}
+                            data-pdf-hide
+                            onClick={handleDownloadPdf}
+                            disabled={pdfState === 'busy'}
                             style={{
                                 marginTop: 14,
                                 border: `1px solid ${C.line}`,
@@ -494,10 +660,14 @@ const Result = () => {
                                 fontWeight: 600,
                                 color: C.sub,
                                 background: '#fff',
-                                cursor: 'pointer',
+                                cursor: pdfState === 'busy' ? 'default' : 'pointer',
                             }}
                         >
-                            견적서 PDF 받기
+                            {pdfState === 'busy'
+                                ? '견적서 생성 중…'
+                                : pdfState === 'error'
+                                  ? '실패 · 다시 시도'
+                                  : '견적서 PDF 받기'}
                         </button>
                     </Section>
 

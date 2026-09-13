@@ -16,11 +16,10 @@ export type ResultData = {
     assumptions: string[];
     versioning: string[];
     price: { low: number; high: number };
-    monthlyNote: string;
     // ── 게이트 이후 (제출 후 blur 해제) ──
     breakdown: Money[];
     total: number;
     monthly: Money[];
     oneTime: Money[];
-    schema: { table: string; columns: { name: string; type: string; note?: string }[] }[];
+    schema: { table: string; columns: { name: string; type: string; note?: string | null }[] }[];
 };

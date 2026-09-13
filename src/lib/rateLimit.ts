@@ -49,3 +49,16 @@ export function clientIp(req: Request): string {
   }
   return 'unknown';
 }
+
+/**
+ * IP + User-Agent 를 합친 레이트리밋 키.
+ * 같은 사용자가 새로고침·재요청으로 비싼 엔드포인트(견적 생성 등)를 반복 호출하는 것을 억제한다.
+ * IP 만으로는 공유망(회사·카페)에서 과차단, UA 만으로는 식별력이 약하므로 둘을 함께 쓴다.
+ * UA 는 길어질 수 있어 djb2 로 짧게 해시한다.
+ */
+export function clientFingerprint(req: Request): string {
+  const ua = req.headers.get('user-agent') ?? '';
+  let hash = 5381;
+  for (let i = 0; i < ua.length; i++) hash = ((hash << 5) + hash + ua.charCodeAt(i)) | 0;
+  return `${clientIp(req)}:${(hash >>> 0).toString(36)}`;
+}

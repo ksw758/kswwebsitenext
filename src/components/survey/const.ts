@@ -65,6 +65,20 @@ export const Questions: QuestionType[] = [
         ],
     },
 
+    // 창업자만. 정부지원/투자로 예산이 확보되는지가 견적 규모를 크게 가른다.
+    // (그 외 직군은 물어보지 않고, 견적에서 소상공인 예산 트랙으로 축소 산정)
+    {
+        id: 'gov_funded',
+        title: '정부지원 사업으로 진행하시나요?',
+        type: 'single',
+        showIf: (a) => a.requester_type === 'founder',
+        choices: [
+            { value: 'yes', label: '네 · 정부지원 · 투자 예산이 있어요' },
+            { value: 'planning', label: '지원 사업 신청 예정 · 검토 중이에요' },
+            { value: 'no', label: '아니요 · 자체 예산으로 해요' },
+        ],
+    },
+
     // 소개페이지는 실서비스로 취급(단계 질문 생략), 자동화는 별도 트랙이라 생략.
     {
         id: 'stage',
@@ -91,6 +105,7 @@ export const Questions: QuestionType[] = [
             { value: 'survey_report', label: '설문 · 리서치 · 리포트' },
             { value: 'matching_social', label: '매칭 · 소셜' },
             { value: 'content_community', label: '콘텐츠 · 커뮤니티' },
+            { value: 'quiz_test', label: '테스트 · 퀴즈 · 밸런스게임' },
             { value: 'contract_docs', label: '계약 · 문서 관리' },
             { value: 'influencer', label: '인플루언서 · 추천' },
             { value: 'etc', label: '기타' },
