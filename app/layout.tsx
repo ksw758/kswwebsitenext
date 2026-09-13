@@ -7,6 +7,8 @@ import ChatBotButton from "@/src/components/ChatBotButton";
 const BASE_URL = 'https://kswwebsitenext.vercel.app';
 
 export const metadata: Metadata = {
+  // 미설정 시 opengraph-image 같은 파일 기반 메타데이터가 프로덕션에서도 localhost 로 resolve 됨.
+  metadataBase: new URL(BASE_URL),
   title: "상원(SW)에이전츠 — 웹/앱 개발 외주",
   description: "9년차 풀스택 개발자의 1인 개발 에이전시. 웹사이트·앱 MVP·바이브코딩 최적화 외주 문의 환영합니다.",
   verification: {

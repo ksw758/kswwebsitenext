@@ -546,6 +546,7 @@ const Result = () => {
             <Reveal>
             <form
                 onSubmit={onSubmit}
+                data-pdf-hide
                 style={{
                     background: '#fff',
                     border: `2px solid ${C.blue}`,
@@ -646,29 +647,31 @@ const Result = () => {
                             AI가 생성한 개략 견적입니다. 실제 계약 금액은 상담 후 확정되며, 요구사항 변동에 따라 달라질 수 있습니다.
                         </p>
 
-                        <button
-                            type="button"
-                            data-pdf-hide
-                            onClick={handleDownloadPdf}
-                            disabled={pdfState === 'busy'}
-                            style={{
-                                marginTop: 14,
-                                border: `1px solid ${C.line}`,
-                                borderRadius: 10,
-                                padding: '10px 16px',
-                                fontSize: 13,
-                                fontWeight: 600,
-                                color: C.sub,
-                                background: '#fff',
-                                cursor: pdfState === 'busy' ? 'default' : 'pointer',
-                            }}
-                        >
-                            {pdfState === 'busy'
-                                ? '견적서 생성 중…'
-                                : pdfState === 'error'
-                                  ? '실패 · 다시 시도'
-                                  : '견적서 PDF 받기'}
-                        </button>
+                        {!isMobile && (
+                            <button
+                                type="button"
+                                data-pdf-hide
+                                onClick={handleDownloadPdf}
+                                disabled={pdfState === 'busy'}
+                                style={{
+                                    marginTop: 14,
+                                    border: `1px solid ${C.line}`,
+                                    borderRadius: 10,
+                                    padding: '10px 16px',
+                                    fontSize: 13,
+                                    fontWeight: 600,
+                                    color: C.sub,
+                                    background: '#fff',
+                                    cursor: pdfState === 'busy' ? 'default' : 'pointer',
+                                }}
+                            >
+                                {pdfState === 'busy'
+                                    ? '견적서 생성 중…'
+                                    : pdfState === 'error'
+                                      ? '실패 · 다시 시도'
+                                      : '견적서 PDF 받기'}
+                            </button>
+                        )}
                     </Section>
 
                     {/* 8. DB 스키마 (db_schema_design_pattern_example.png 참고) */}
