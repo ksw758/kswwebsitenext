@@ -309,10 +309,11 @@ const Result = () => {
         }
     }, [rawResult]);
     const [unlocked, setUnlocked] = useState(false);
-    const [form, setForm] = useState({ name: '', phone: '', email: '', comment: '', agree: false });
+    const [form, setForm] = useState({ name: '', phone: '', email: '', comment: '', agree: false, website: '' });
     const gatedRef = useRef<HTMLDivElement>(null);
     const pageRef = useRef<HTMLDivElement>(null);
     const [pdfState, setPdfState] = useState<'idle' | 'busy' | 'error'>('idle');
+    const [leadState, setLeadState] = useState<'idle' | 'busy' | 'error'>('idle');
 
     // 최상위 블록(헤더 + 각 섹션 + 연락처 폼)을 개별 캡처해 jsPDF 에 배치한다.
     // 페이지에 안 들어가는 블록은 다음 페이지에서 시작 → 페이지 경계에서 섹션이 잘리지 않음.
@@ -418,15 +419,44 @@ const Result = () => {
 
     const canSubmit = !!form.name && !!form.phone && !!form.email && form.agree;
 
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!canSubmit) return;
-        // MOCK: 실제로는 POST /api/v1/... 로 리드 저장 + trackLead,
-        //       응답의 GenerateResponse 로 setData 후 unlock.
-        setUnlocked(true);
-        requestAnimationFrame(() =>
-            gatedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-        );
+        if (!canSubmit || leadState === 'busy' || unlocked) return;
+        setLeadState('busy');
+
+        let answers: unknown = null;
+        try {
+            const raw = sessionStorage.getItem('survey:answers');
+            answers = raw ? JSON.parse(raw) : null;
+        } catch {
+            /* 접근 불가 환경 무시 */
+        }
+
+        try {
+            const res = await fetch('/api/v1/estimate/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name,
+                    phone: form.phone,
+                    email: form.email,
+                    comment: form.comment,
+                    agree: form.agree,
+                    website: form.website, // 허니팟
+                    answers,
+                    headline: data.headline,
+                }),
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            setLeadState('idle');
+            setUnlocked(true);
+            requestAnimationFrame(() =>
+                gatedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+            );
+        } catch (err) {
+            console.error('[estimate/lead]', err);
+            setLeadState('error');
+        }
     };
 
     const set =
@@ -563,6 +593,10 @@ const Result = () => {
                         연락처를 남기시면 항목별 견적과 예상 DB 스키마가 열리고, 검토 후 연락드려요.
                     </p>
                 </div>
+                {/* 허니팟 — 사람 눈에는 안 보이고 봇만 채우는 필드 */}
+                <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}>
+                    <input type="text" tabIndex={-1} autoComplete="off" name="website" value={form.website} onChange={set('website')} />
+                </div>
                 <div style={{ display: 'flex', gap: 10, flexDirection: isMobile ? 'column' : 'row' }}>
                     <input style={input} placeholder="이름" value={form.name} onChange={set('name')} />
                     <input style={input} placeholder="전화번호" value={form.phone} onChange={set('phone')} />
@@ -587,7 +621,7 @@ const Result = () => {
                 </label>
                 <button
                     type="submit"
-                    disabled={!canSubmit || unlocked}
+                    disabled={!canSubmit || unlocked || leadState === 'busy'}
                     style={{
                         border: 'none',
                         borderRadius: 12,
@@ -595,11 +629,17 @@ const Result = () => {
                         fontSize: 15,
                         fontWeight: 700,
                         color: '#fff',
-                        background: !canSubmit || unlocked ? '#C7D0DA' : C.blue,
-                        cursor: !canSubmit || unlocked ? 'default' : 'pointer',
+                        background: !canSubmit || unlocked || leadState === 'busy' ? '#C7D0DA' : C.blue,
+                        cursor: !canSubmit || unlocked || leadState === 'busy' ? 'default' : 'pointer',
                     }}
                 >
-                    {unlocked ? '열림 ✓' : '제출하고 상세 결과 보기'}
+                    {unlocked
+                        ? '열림 ✓'
+                        : leadState === 'busy'
+                          ? '제출 중…'
+                          : leadState === 'error'
+                            ? '실패 · 다시 시도'
+                            : '제출하고 상세 결과 보기'}
                 </button>
             </form>
             </Reveal>
