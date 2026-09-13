@@ -43,7 +43,7 @@ function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: n
 
 const isReduced = () =>
     typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;정
 
 export default function Processing({
     messages = DEFAULT_MESSAGES,
