@@ -48,7 +48,7 @@ const isReduced = () =>
 export default function Processing({
     messages = DEFAULT_MESSAGES,
     progress,
-    headline = '필요한 결과들을 수집하는 중입니다.',
+    headline = '설문 내용을 바탕으로 견적과 일정을 만드는 중입니다.',
 }: ProcessingProps) {
     const [msgIdx, setMsgIdx] = useState(0);
     const wrapRef = useRef<HTMLDivElement>(null);
