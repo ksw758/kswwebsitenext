@@ -2,9 +2,7 @@ import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export const alt = 'AI 견적 시뮬레이터 · 상원(SW)에이전츠';
 export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
 
 /**
  * scripts/generate-survey-og.js 로 만든 public/asset/survey-og.png(카카오 등 정적 크롤러용 백업)와
