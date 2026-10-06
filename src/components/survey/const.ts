@@ -179,9 +179,9 @@ export const Questions: QuestionType[] = [
     {
         // 항상 마지막. 자유 입력 태그(칩) — answers.hashtags 는 string[]
         id: 'hashtags',
-        title: '원하시는 서비스를 설명하는 키워드를 최소 3개만 입력해주세요.',
+        title: '원하시는 서비스를 설명하는 키워드를 최소 2개만 입력해주세요.',
         type: 'tags',
-        min: 3,
+        min: 2,
         placeholder: '예약, 결제, 관리자 대시보드, 등등',
     },
 ];

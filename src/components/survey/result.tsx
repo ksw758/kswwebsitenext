@@ -2,6 +2,7 @@
 
 import React, { useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
+import { trackLead } from '@/src/lib/metaPixel';
 import { Reveal, SectionFxProvider, useSectionReveal } from './sectionFx';
 import type { Money, ResultData } from './resultTypes';
 
@@ -448,6 +449,7 @@ const Result = () => {
                 }),
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            trackLead();
             setLeadState('idle');
             setUnlocked(true);
             requestAnimationFrame(() =>
