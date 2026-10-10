@@ -11,8 +11,9 @@ import { getAttribution } from '@/src/lib/attribution';
 const PRIVACY_TEXT =
   '개인 및 기업정보의 수집·이용에 관한 사항\n' +
   '수집 목적 : 외주 프로젝트 문의 및 견적 안내\n' +
-  '수집 항목 : 이름, 연락처, 상호명, 이메일, 문의내용\n' +
-  '보유·이용 기간 : 문의 처리 완료 후 즉시 파기';
+  '수집 항목 : 이름, 연락처, 상호명, 이메일, 문의내용, 광고 유입 정보(UTM)\n' +
+  '보유·이용 기간 : 문의 처리 완료 후 즉시 파기 (관계 법령에 따른 보관 제외)\n' +
+  '동의를 거부할 수 있으며, 거부 시 문의 접수가 제한됩니다.';
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
@@ -272,7 +273,10 @@ const Contact = () => {
               style={{ width: 16, height: 16, accentColor: theme.color.gold }}
             />
             <span style={{ fontFamily: theme.font.serif, fontSize: 12, color: `${theme.color.parchment}99`, letterSpacing: '1px' }}>
-              개인·기업 정보 수집·이용에 동의합니다.
+              개인·기업 정보 수집·이용에 동의합니다.{' '}
+              <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: theme.color.gold }}>
+                개인정보 처리방침
+              </a>
             </span>
           </label>
         </div>

@@ -19,7 +19,6 @@ import {
     fitWbs,
     headlineWithPrice,
 } from '@/src/components/survey/estimatePrompt';
-import * as util from "node:util";
 
 // OpenAI 호출 여유 (기본은 배포 플랫폼 설정값)
 export const maxDuration = 60;
@@ -50,7 +49,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
     }
     const answers = (body as { answers?: Record<string, unknown> } | null)?.answers;
-console.log(util.inspect(answers, { depth: null }));
     if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
         return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
     }

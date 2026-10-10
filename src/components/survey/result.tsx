@@ -621,8 +621,16 @@ const Result = () => {
                         onChange={(e) => setForm((f) => ({ ...f, agree: e.target.checked }))}
                         style={{ width: 16, height: 16, accentColor: C.blue }}
                     />
-                    개인정보 수집 · 이용에 동의합니다 (견적 안내 목적, 처리 후 파기)
+                    개인정보 수집 · 이용에 동의합니다 (이름·연락처·이메일·설문 답변 / 견적 안내 목적 / 처리 후 파기)
                 </label>
+                <p style={{ margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.sub }}>
+                    동의를 거부할 수 있으며, 거부 시 상세 견적 확인이 제한됩니다. 설문 답변은 견적 생성을 위해
+                    AI 서비스로 전송됩니다. 자세한 내용은{' '}
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: C.blue }}>
+                        개인정보 처리방침
+                    </a>
+                    을 확인해 주세요.
+                </p>
                 <button
                     type="submit"
                     disabled={!canSubmit || unlocked || leadState === 'busy'}
