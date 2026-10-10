@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Questions, toChoice, type Answers, type QuestionType } from './const';
 import { FORM_COLORS, FxButton, FxGauge, FxOption, FxTags, FxTextInput } from './formFx';
 import Processing from './processing';
+import { trackSurveyComplete } from '@/src/lib/metaPixel';
 
 const { INK, MUTED } = FORM_COLORS;
 const FADE = 210; // ms — 질문 전환 페이드
@@ -130,6 +131,7 @@ const Form = () => {
             } catch {
                 /* 무시 */
             }
+            trackSurveyComplete();
             // Processing 은 응답이 올 때까지 노출됨 (서버 생성 시간이 곧 대기 시간)
             router.push('/survey/result');
         } catch {

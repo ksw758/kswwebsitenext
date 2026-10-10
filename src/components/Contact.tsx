@@ -6,6 +6,7 @@ import { theme } from '@/src/const';
 import GreekMeander from '@/src/components/GreekMeander';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
 import { trackLead } from '@/src/lib/metaPixel';
+import { getAttribution } from '@/src/lib/attribution';
 
 const PRIVACY_TEXT =
   '개인 및 기업정보의 수집·이용에 관한 사항\n' +
@@ -64,8 +65,8 @@ const Contact = () => {
     }
     setStatus('loading');
     try {
-      await axios.post('/api/v1/inquiry', form);
-      trackLead();
+      await axios.post('/api/v1/inquiry', { ...form, attribution: getAttribution() });
+      trackLead({ content_name: 'contact_form' });
       setStatus('success');
       setForm({ name: '', phone: '', company: '', email: '', contents: '', website: '', isAgreement: false });
     } catch (e) {

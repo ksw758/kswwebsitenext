@@ -3,6 +3,7 @@
 import React, { useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
 import { trackLead } from '@/src/lib/metaPixel';
+import { getAttribution } from '@/src/lib/attribution';
 import { Reveal, SectionFxProvider, useSectionReveal } from './sectionFx';
 import type { Money, ResultData } from './resultTypes';
 
@@ -446,10 +447,11 @@ const Result = () => {
                     website: form.website, // 허니팟
                     answers,
                     headline: data.headline,
+                    attribution: getAttribution(),
                 }),
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            trackLead();
+            trackLead({ content_name: 'estimate_survey' });
             setLeadState('idle');
             setUnlocked(true);
             requestAnimationFrame(() =>

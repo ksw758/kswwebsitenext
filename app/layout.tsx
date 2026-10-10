@@ -84,14 +84,14 @@ export default function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1394686572601577');
+              fbq('init', '1405930557807784');
               fbq('track', 'PageView');
             `,
           }}
         />
         <noscript>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img height="1" width="1" style={{display:'none'}} alt="" src="https://www.facebook.com/tr?id=1394686572601577&ev=PageView&noscript=1" />
+          <img height="1" width="1" style={{display:'none'}} alt="" src="https://www.facebook.com/tr?id=1405930557807784&ev=PageView&noscript=1" />
         </noscript>
       </head>
       <body style={{ margin: 'auto', overflowX: 'hidden', overflowY: 'scroll' }}>

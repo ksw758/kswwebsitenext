@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { isSameOrigin } from '@/src/lib/guard';
 import { checkRateLimit, clientIp } from '@/src/lib/rateLimit';
+import { formatAttribution, sanitizeAttribution } from '@/src/lib/attribution';
 
 const RATE_LIMIT = 3;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -45,6 +46,7 @@ export async function POST(req: NextRequest) {
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   const contents = typeof body.contents === 'string' ? body.contents.trim() : '';
   const isAgreement = body.isAgreement === true;
+  const attribution = sanitizeAttribution(body.attribution);
 
   if (!name || !phone || !email || !contents) {
     return NextResponse.json({ error: '필수 항목이 누락되었습니다.' }, { status: 400 });
@@ -89,6 +91,8 @@ export async function POST(req: NextRequest) {
       `이메일: ${email}`,
       '',
       `문의내용:\n${contents}`,
+      '',
+      formatAttribution(attribution),
     ].join('\n'),
   });
 

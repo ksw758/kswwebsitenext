@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
 import HeroArt from './steps/HeroArt';
 import SurveyFooter from './SurveyFooter';
+import { trackSurveyStart } from '@/src/lib/metaPixel';
 
 const Survey = () => {
     const isMobile = useIsMobile();
@@ -91,7 +92,10 @@ const Survey = () => {
                         {'3분만 간단한 설문 받아보시고, 견적도 확인해보세요!'}
                     </p>
                     <button
-                        onClick={() => router.push('/survey/form')}
+                        onClick={() => {
+                            trackSurveyStart();
+                            router.push('/survey/form');
+                        }}
                         style={{
                             marginTop: 8,
                             display: 'inline-flex',
